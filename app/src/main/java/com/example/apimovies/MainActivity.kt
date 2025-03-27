@@ -7,11 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.apimovies.data.MovieItem
+import com.example.apimovies.presentation.compose.MainListScreen
 import com.example.apimovies.ui.theme.APIMOVIESTheme
+import kotlinx.collections.immutable.persistentListOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             APIMOVIESTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    MainListScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        list = list
                     )
                 }
             }
@@ -30,18 +30,21 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    APIMOVIESTheme {
-        Greeting("Android")
-    }
-}
+val list = persistentListOf(
+    MovieItem.preview().copy(id = 1),
+    MovieItem.preview().copy(id = 2),
+    MovieItem.preview().copy(id = 3),
+    MovieItem.preview().copy(id = 4),
+    MovieItem.preview().copy(id = 5),
+    MovieItem.preview().copy(id = 6),
+    MovieItem.preview().copy(id = 7),
+    MovieItem.preview().copy(id = 8),
+    MovieItem.preview().copy(id = 9),
+    MovieItem.preview().copy(id = 11),
+    MovieItem.preview().copy(id = 22),
+    MovieItem.preview().copy(id = 33),
+    MovieItem.preview().copy(id = 44),
+    MovieItem.preview().copy(id = 55),
+    MovieItem.preview().copy(id = 66),
+    MovieItem.preview().copy(id = 77),
+)
