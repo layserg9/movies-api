@@ -1,5 +1,8 @@
 package com.example.apimovies.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class MovieItem(
     val id: Long,
     val name: String,

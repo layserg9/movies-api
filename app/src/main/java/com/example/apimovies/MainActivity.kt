@@ -8,10 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.apimovies.data.MovieItem
 import com.example.apimovies.presentation.compose.MainListScreen
+import com.example.apimovies.presentation.compose.MovieDetailsScreen
 import com.example.apimovies.ui.theme.APIMOVIESTheme
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,10 +26,46 @@ class MainActivity : ComponentActivity() {
         setContent {
             APIMOVIESTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainListScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        list = list
-                    )
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = MainList
+                    ) {
+                        composable<MainList> {
+                            MainListScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                list = list,
+                                onItemClick = { movieItem ->
+                                    navController.navigate(
+                                        MovieDetails(
+                                            id = movieItem.id,
+                                            name = movieItem.name,
+                                            alternativeName = movieItem.alternativeName,
+                                            year = movieItem.year,
+                                            genres = movieItem.genres,
+                                            countries = movieItem.countries,
+                                            poster = movieItem.poster,
+                                            kpRating = movieItem.kpRating
+                                        )
+                                    )
+                                }
+                            )
+                        }
+                        composable<MovieDetails> {
+                            val args = it.toRoute<MovieDetails>()
+                            MovieDetailsScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                id = args.id,
+                                name = args.name,
+                                alternativeName = args.alternativeName,
+                                year = args.year,
+                                genres = args.genres,
+                                countries = args.countries,
+                                poster = args.poster,
+                                kpRating = args.kpRating
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -48,3 +90,18 @@ val list = persistentListOf(
     MovieItem.preview().copy(id = 66),
     MovieItem.preview().copy(id = 77),
 )
+
+@Serializable
+object MainList
+
+@Serializable
+data class MovieDetails(
+    val id: Long,
+    val name: String,
+    val alternativeName: String?,
+    val year: Long,
+    val genres: List<String>,
+    val countries: List<String>,
+    val poster: String,
+    val kpRating: Float,
+    )
