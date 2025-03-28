@@ -6,8 +6,26 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.Build
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -25,8 +43,46 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             APIMOVIESTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val navController = rememberNavController()
+                var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
+                val navController = rememberNavController()
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        NavigationBar {
+                            bottomNavigationItems.forEachIndexed { index, item ->
+                                NavigationBarItem(
+                                    selected = selectedItemIndex == index,
+                                    onClick = {
+                                        selectedItemIndex = index
+                                        navController.navigate(item.route)
+                                    },
+                                    label = { Text(text = item.title) },
+                                    icon = {
+                                        BadgedBox(
+                                            badge = {
+                                                if (item.badgeCount != null) {
+                                                    Badge {
+                                                        Text(
+                                                            text = item.badgeCount.toString()
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        ) {
+                                            Icon(
+                                                contentDescription = "",
+                                                imageVector = if (index == selectedItemIndex) {
+                                                    item.selectedIcon
+                                                } else item.unselectedIcon
+                                            )
+                                        }
+                                    },
+                                )
+                            }
+                        }
+                    }
+                ) { innerPadding ->
                     NavHost(
                         navController = navController,
                         startDestination = MainList
@@ -91,6 +147,36 @@ val list = persistentListOf(
     MovieItem.preview().copy(id = 77),
 )
 
+val bottomNavigationItems = listOf(
+    BottomNavigationItem(
+        title = "Главное",
+        route = MainList,
+        selectedIcon = Icons.Filled.Home,
+        unselectedIcon = Icons.Outlined.Home,
+    ),
+    BottomNavigationItem(
+        title = "Избранное",
+        route = MovieDetails(
+            id = 123123123,
+            name = "movieItem.name",
+            alternativeName = "movieItem.alternativeName",
+            year = 2025L,
+            genres = listOf("horror, action"),
+            countries = listOf("Russia, USA"),
+            poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
+            kpRating = 10.0f
+        ),
+        selectedIcon = Icons.Filled.FavoriteBorder,
+        unselectedIcon = Icons.Outlined.FavoriteBorder,
+        badgeCount = 2
+    ), BottomNavigationItem(
+        title = "Иное",
+        route = MainList,
+        selectedIcon = Icons.Filled.Build,
+        unselectedIcon = Icons.Outlined.Build,
+    )
+)
+
 @Serializable
 object MainList
 
@@ -104,4 +190,12 @@ data class MovieDetails(
     val countries: List<String>,
     val poster: String,
     val kpRating: Float,
-    )
+)
+
+data class BottomNavigationItem(
+    val title: String,
+    val route: Any,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val badgeCount: Int? = null,
+)
