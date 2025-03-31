@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.apimovies.data.MovieItem
+import com.example.apimovies.data.Movie
 import com.example.apimovies.ui.theme.LabelsSecondaryLight
 import com.example.apimovies.ui.theme.OnPrimaryLightLight
 
@@ -30,9 +30,9 @@ fun MovieDetailsScreen(
     genres: List<String>,
     countries: List<String>,
     poster: String,
-    kpRating: Float,
+    kpRating: Double?,
 ) {
-    val movie = MovieItem(
+    val movie = Movie(
         id = id,
         name = name,
         alternativeName = alternativeName,
@@ -74,7 +74,7 @@ fun MovieDetailsScreen(
 @Composable
 private fun MovieInfo(
     modifier: Modifier = Modifier,
-    movie: MovieItem
+    movie: Movie
 ) {
     Column(
         modifier = modifier,
@@ -82,7 +82,7 @@ private fun MovieInfo(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     )
     {
-        Text(text = movie.name, style = MaterialTheme.typography.titleMedium)
+        Text(text = movie.name?: "", style = MaterialTheme.typography.titleMedium)
         Text(
             text = "${movie.alternativeName}, ${movie.year}",
             style = MaterialTheme.typography.titleSmall

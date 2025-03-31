@@ -77,7 +77,10 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.retrofit2)
+    implementation(libs.converter.gson)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
 }

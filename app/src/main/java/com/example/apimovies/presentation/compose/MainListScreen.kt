@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.apimovies.R
-import com.example.apimovies.data.MovieItem
+import com.example.apimovies.data.Movie
 import com.example.apimovies.ui.theme.APIMOVIESTheme
 import com.example.apimovies.ui.theme.Elevation08DpLight
 import com.example.apimovies.ui.theme.LabelsSecondaryDark
@@ -38,8 +38,8 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun MainListScreen(
     modifier: Modifier = Modifier,
-    list: ImmutableList<MovieItem>,
-    onItemClick: (MovieItem) -> Unit = {}
+    list: ImmutableList<Movie>,
+    onItemClick: (Movie) -> Unit = {},
 ) {
     LazyColumn(
         modifier = modifier
@@ -62,8 +62,8 @@ fun MainListScreen(
 @Composable
 private fun MovieItem(
     modifier: Modifier = Modifier,
-    movie: MovieItem,
-    onClick: (MovieItem) -> Unit
+    movie: Movie,
+    onClick: (Movie) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -97,7 +97,7 @@ private fun MovieItem(
 @Composable
 private fun MovieInfo(
     modifier: Modifier = Modifier,
-    movie: MovieItem
+    movie: Movie
 ) {
     Column(
         modifier = modifier,
@@ -105,7 +105,7 @@ private fun MovieInfo(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     )
     {
-        Text(text = movie.name, style = MaterialTheme.typography.titleMedium)
+        Text(text = movie.name?: "", style = MaterialTheme.typography.titleMedium)
         Text(
             text = "${movie.alternativeName}, ${movie.year}",
             style = MaterialTheme.typography.titleSmall
@@ -129,7 +129,7 @@ private fun MovieInfo(
 @Composable
 private fun MovieItemForPreview(
     modifier: Modifier = Modifier,
-    movie: MovieItem
+    movie: Movie
 ) {
     Row(
         modifier = modifier
@@ -160,6 +160,6 @@ private fun MovieItemForPreview(
 @Preview
 private fun MovieItemPreview() {
     APIMOVIESTheme {
-        MovieItemForPreview(movie = MovieItem.preview())
+        MovieItemForPreview(movie = Movie.preview())
     }
 }
