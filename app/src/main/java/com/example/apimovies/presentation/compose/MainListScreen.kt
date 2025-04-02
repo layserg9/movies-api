@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,22 +75,25 @@ private fun MovieItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
+            modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
-
         ) {
             AsyncImage(
-                modifier = Modifier.height(100.dp),
+                modifier = Modifier
+                    .height(150.dp)
+                    .aspectRatio(2f / 3f),
                 model = movie.poster,
                 contentDescription = ""
             )
             MovieInfo(movie = movie)
         }
         Text(
-            text = "${movie.kpRating}",
+            text = if(movie.kpRating == 0.0) "" else "${movie.kpRating}",
             style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(end = 16.dp)
-
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .wrapContentWidth()
         )
     }
 }
@@ -105,7 +109,7 @@ private fun MovieInfo(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     )
     {
-        Text(text = movie.name?: "", style = MaterialTheme.typography.titleMedium)
+        Text(text = movie.name ?: "", style = MaterialTheme.typography.titleMedium)
         Text(
             text = "${movie.alternativeName}, ${movie.year}",
             style = MaterialTheme.typography.titleSmall
@@ -115,7 +119,7 @@ private fun MovieInfo(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val countries = movie.countries.joinToString { it }
-            val genres = movie.genres.joinToString { it}
+            val genres = movie.genres.joinToString { it }
 
             Text(text = countries)
             Canvas(modifier = Modifier.size(2.dp)) {

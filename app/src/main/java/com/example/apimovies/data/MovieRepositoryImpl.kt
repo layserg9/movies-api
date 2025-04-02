@@ -39,7 +39,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieList(): List<Movie> {
         return try {
-            val movies = fetchMovies("star")
+            val movies = fetchMovies("star wars")
             movies.map { it.toMovie() }
         } catch (e: Exception) {
             Log.e("MovieRepository", "Error fetching movie list", e)
@@ -66,8 +66,8 @@ class MovieRepositoryImpl @Inject constructor(
             name = this.name ?: "",
             alternativeName = this.alternativeName ?: "",
             year = this.year ?: 0L,
-            genres = this.genres?.map { it.name ?: "" } ?: listOf(),
-            countries = this.countries?.map { it.name ?: "" } ?: listOf(),
+            genres = this.genres?.take(2)?.map { it.name ?: "" } ?: listOf(),
+            countries = this.countries?.take(1)?.map { it.name ?: "" } ?: listOf(),
             poster = this.poster?.url ?: "",
             kpRating = this.rating?.kp ?: 0.0
         )
