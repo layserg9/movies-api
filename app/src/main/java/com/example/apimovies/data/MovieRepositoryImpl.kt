@@ -49,7 +49,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     private suspend fun fetchMovies(movieName: String): List<MovieItem> {
         return try {
-            apiService.getMoviesByName(movieName = movieName).docs
+            apiService.getMoviesByName(limit = 30, movieName = movieName).docs
         } catch (e: Exception) {
             Log.e("MovieRepository", "Network error", e)
             emptyList()

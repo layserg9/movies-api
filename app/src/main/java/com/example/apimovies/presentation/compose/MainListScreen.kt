@@ -23,7 +23,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -89,7 +91,7 @@ private fun MovieItem(
             MovieInfo(movie = movie)
         }
         Text(
-            text = if(movie.kpRating == 0.0) "" else "${movie.kpRating}",
+            text = if (movie.kpRating == 0.0) "" else "${movie.kpRating}",
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier
                 .padding(end = 16.dp)
@@ -109,7 +111,12 @@ private fun MovieInfo(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     )
     {
-        Text(text = movie.name ?: "", style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = movie.name,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
         Text(
             text = "${movie.alternativeName}, ${movie.year}",
             style = MaterialTheme.typography.titleSmall
