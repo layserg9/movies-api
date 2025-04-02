@@ -5,7 +5,6 @@ import com.example.apimovies.domain.MovieRepository
 import com.example.apimovies.retrofit.AuthInterceptor
 import com.example.apimovies.retrofit.MovieAPI
 import com.example.apimovies.retrofit.MovieItem
-import com.example.apimovies.retrofit.MovieResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -39,7 +38,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieList(): List<Movie> {
         return try {
-            val movies = fetchMovies("star wars")
+            val movies = fetchMovies("planned-to-watch-films")
             movies.map { it.toMovie() }
         } catch (e: Exception) {
             Log.e("MovieRepository", "Error fetching movie list", e)
@@ -47,7 +46,46 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun fetchMovies(movieName: String): List<MovieItem> {
+    override suspend fun getMovieListByDate(): List<Movie> {
+        return try {
+            val movies = fetchMoviesByDate("01.01.2025-01.04.2025")
+            movies.map { it.toMovie() }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error fetching movie list", e)
+            emptyList()
+        }
+    }
+
+    override suspend fun searchMovieList(): List<Movie> {
+        return try {
+            val movies = fetchMoviesByName("star wars")
+            movies.map { it.toMovie() }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error fetching movie list", e)
+            emptyList()
+        }
+    }
+
+    private suspend fun fetchMovies(lists: String): List<MovieItem> {
+        return try {
+            apiService.getMovies(limit = 30, lists = lists).docs
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Network error", e)
+            emptyList()
+        }
+    }
+
+    private suspend fun fetchMoviesByDate(updatedAt: String): List<MovieItem> {
+        return try {
+            apiService.getMoviesByDate(limit = 30, updatedAt = updatedAt).docs
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Network error", e)
+            emptyList()
+        }
+    }
+
+
+    private suspend fun fetchMoviesByName(movieName: String): List<MovieItem> {
         return try {
             apiService.getMoviesByName(limit = 30, movieName = movieName).docs
         } catch (e: Exception) {

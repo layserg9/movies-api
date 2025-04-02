@@ -105,6 +105,10 @@ private fun MovieInfo(
     modifier: Modifier = Modifier,
     movie: Movie
 ) {
+    val text = listOf(movie.alternativeName, movie.year.takeIf { it != 0L }.toString())
+        .filter { it.isNotBlank()}
+        .joinToString(", ")
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.Start,
@@ -118,7 +122,7 @@ private fun MovieInfo(
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = "${movie.alternativeName}, ${movie.year}",
+            text = text,
             style = MaterialTheme.typography.titleSmall
         )
         Row(
