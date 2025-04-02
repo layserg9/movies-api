@@ -24,12 +24,12 @@ import com.example.apimovies.ui.theme.OnPrimaryLightLight
 fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     id: Long,
-    name: String,
+    name: String?,
     alternativeName: String?,
-    year: Long,
-    genres: List<String>,
-    countries: List<String>,
-    poster: String,
+    year: Long?,
+    genres: List<String?>,
+    countries: List<String?>,
+    poster: String?,
     kpRating: Double?,
 ) {
     val movie = Movie(
@@ -91,8 +91,8 @@ private fun MovieInfo(
             horizontalArrangement = Arrangement.spacedBy(2.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val countries = movie.countries.joinToString { it }
-            val genres = movie.genres.joinToString { it }
+            val countries = movie.countries.joinToString { it.toString() }
+            val genres = movie.genres.joinToString { it.toString() }
 
             Text(text = countries)
             Canvas(modifier = Modifier.size(2.dp)) {

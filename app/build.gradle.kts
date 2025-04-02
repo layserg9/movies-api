@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.retrofit2)
     implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

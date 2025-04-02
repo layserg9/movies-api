@@ -94,9 +94,9 @@ class MainActivity : ComponentActivity() {
                         startDestination = MainList
                     ) {
                         composable<MainList> {
-//                            val viewModel: MainListScreenViewModel =
-//                                hiltViewModel<MainListScreenViewModelImpl>()
-//                            val list by viewModel.viewState
+                            val viewModel: MainListScreenViewModel =
+                                hiltViewModel<MainListScreenViewModelImpl>()
+                            val list by viewModel.viewState
 
                             MainListScreen(
                                 modifier = Modifier.padding(innerPadding),
@@ -201,12 +201,12 @@ object MainList
 @Serializable
 data class MovieDetails(
     val id: Long,
-    val name: String,
+    val name: String?,
     val alternativeName: String?,
-    val year: Long,
-    val genres: List<String>,
-    val countries: List<String>,
-    val poster: String,
+    val year: Long?,
+    val genres: List<String?>,
+    val countries: List<String?>,
+    val poster: String?,
     val kpRating: Double?,
 )
 
