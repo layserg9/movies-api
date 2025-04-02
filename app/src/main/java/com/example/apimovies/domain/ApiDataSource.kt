@@ -1,0 +1,7 @@
+package com.example.apimovies.domain
+
+import com.example.apimovies.data.Movie
+
+interface ApiDataSource {
+    suspend fun getExpectedMovies(): List<Movie>
+}
