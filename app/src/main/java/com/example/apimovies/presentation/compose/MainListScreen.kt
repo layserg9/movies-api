@@ -114,8 +114,8 @@ private fun MovieInfo(
             horizontalArrangement = Arrangement.spacedBy(2.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val countries = movie.countries.joinToString { it.toString() }
-            val genres = movie.genres.joinToString { it.toString() }
+            val countries = movie.countries.joinToString { it }
+            val genres = movie.genres.joinToString { it}
 
             Text(text = countries)
             Canvas(modifier = Modifier.size(2.dp)) {

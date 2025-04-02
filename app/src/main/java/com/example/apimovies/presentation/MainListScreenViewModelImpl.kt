@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainListScreenViewModelImpl @Inject constructor(
     private val movieRepository: MovieRepository
-): MainListScreenViewModel, ViewModel() {
+) : MainListScreenViewModel, ViewModel() {
     private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
     private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
 
@@ -34,7 +34,8 @@ class MainListScreenViewModelImpl @Inject constructor(
 
     private fun loadMovies() {
         viewModelScope.launch {
-            val movies = movieRepository.getMovieList().toImmutableList()
+            val movies = movieRepository.getMovieList().filter { movie -> movie.poster.isNotBlank() }
+                .toImmutableList()
             _movieList.value = movies
         }
     }

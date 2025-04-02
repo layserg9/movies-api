@@ -62,14 +62,14 @@ class MovieRepositoryImpl @Inject constructor(
 
     private fun MovieItem.toMovie(): Movie {
         return Movie(
-            id = this.id,
-            name = this.name?: "",
-            alternativeName = this.alternativeName?: "",
-            year = this.year,
-            genres = this.genres.map { it.name },
-            countries = this.countries.map { it.name },
-            poster = this.poster?.url,
-            kpRating = this.rating?.kp
+            id = this.id ?: 0L,
+            name = this.name ?: "",
+            alternativeName = this.alternativeName ?: "",
+            year = this.year ?: 0L,
+            genres = this.genres?.map { it.name ?: "" } ?: listOf(),
+            countries = this.countries?.map { it.name ?: "" } ?: listOf(),
+            poster = this.poster?.url ?: "",
+            kpRating = this.rating?.kp ?: 0.0
         )
     }
 }
