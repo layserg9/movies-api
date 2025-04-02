@@ -1,24 +1,19 @@
 package com.example.apimovies.presentation.compose
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.apimovies.data.Movie
-import com.example.apimovies.ui.theme.LabelsSecondaryLight
-import com.example.apimovies.ui.theme.OnPrimaryLightLight
+import com.example.apimovies.ui.theme.APIMOVIESTheme
 
 @Composable
 fun MovieDetailsScreen(
@@ -31,6 +26,7 @@ fun MovieDetailsScreen(
     countries: List<String>,
     poster: String,
     kpRating: Double,
+    description: String,
 ) {
     val movie = Movie(
         id = id,
@@ -40,65 +36,46 @@ fun MovieDetailsScreen(
         genres = genres,
         countries = countries,
         poster = poster,
-        kpRating = kpRating
+        kpRating = kpRating,
+        description = description,
     )
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(color = OnPrimaryLightLight),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            AsyncImage(
-                modifier = Modifier.height(100.dp),
-                model = movie.poster,
-                contentDescription = ""
-            )
-            MovieInfo(movie = movie)
-        }
+        AsyncImage(
+            modifier = Modifier.fillMaxWidth(),
+            model = movie.poster,
+            contentDescription = ""
+        )
+        Text(text = movie.name, style = MaterialTheme.typography.titleMedium)
         Text(
-            text = "${movie.kpRating}",
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(end = 16.dp)
-
+            text = "${movie.alternativeName}, ${movie.year}",
+            style = MaterialTheme.typography.titleSmall
+        )
+        Spacer(modifier = Modifier.height(25.dp))
+        Text(
+            text = movie.description,
+            style = MaterialTheme.typography.titleSmall
         )
     }
 }
 
 @Composable
-private fun MovieInfo(
-    modifier: Modifier = Modifier,
-    movie: Movie
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    )
-    {
-        Text(text = movie.name?: "", style = MaterialTheme.typography.titleMedium)
-        Text(
-            text = "${movie.alternativeName}, ${movie.year}",
-            style = MaterialTheme.typography.titleSmall
+@Preview
+fun MovieDetailsScreenPreview(){
+    APIMOVIESTheme {
+        MovieDetailsScreen(
+            id = 1234L,
+            name = "Title",
+            alternativeName = "Alternative title",
+            year = 2025L,
+            genres = listOf("action", "horror"),
+            countries = listOf("USA", "Mexico"),
+            poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
+            kpRating = 7.5,
+            description = "Описание фильма"
         )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val countries = movie.countries.joinToString { it }
-            val genres = movie.genres.joinToString { it }
-
-            Text(text = countries)
-            Canvas(modifier = Modifier.size(2.dp)) {
-                drawCircle(color = LabelsSecondaryLight)
-            }
-            Text(text = genres)
-        }
     }
 }

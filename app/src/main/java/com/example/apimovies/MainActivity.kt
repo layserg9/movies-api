@@ -141,6 +141,7 @@ class MainActivity : ComponentActivity() {
                                     countries = movieItem.countries,
                                     poster = movieItem.poster,
                                     kpRating = movieItem.kpRating,
+                                    description = movieItem.description?:"",
                                 )
 
                                 MovieDetailsScreen(
@@ -152,7 +153,8 @@ class MainActivity : ComponentActivity() {
                                     genres = movie.genres,
                                     countries = movie.countries,
                                     poster = movie.poster,
-                                    kpRating = movie.kpRating
+                                    kpRating = movie.kpRating,
+                                    description = movieItem.description?: "",
                                 )
                             } ?: run {
                                 CircularProgressIndicator()
@@ -219,6 +221,7 @@ data class MovieDetails(
     val countries: List<String>,
     val poster: String,
     val kpRating: Double,
+    val description: String? = null,
 )
 
 data class BottomNavigationItem(

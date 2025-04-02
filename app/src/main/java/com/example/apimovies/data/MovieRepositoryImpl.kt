@@ -107,7 +107,8 @@ class MovieRepositoryImpl @Inject constructor(
             genres = this.genres?.take(2)?.map { it.name ?: "" } ?: listOf(),
             countries = this.countries?.take(1)?.map { it.name ?: "" } ?: listOf(),
             poster = this.poster?.url ?: "",
-            kpRating = this.rating?.kp ?: 0.0
+            kpRating = this.rating?.kp ?: 0.0,
+            description = this.description ?: ""
         )
     }
 }

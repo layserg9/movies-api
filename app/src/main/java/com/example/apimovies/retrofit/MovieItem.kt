@@ -16,7 +16,8 @@ data class MovieItem(
     val isSeries: Boolean?,
     val ageRating: Int?,
     val status: String?,
-    val votes: Rating?
+    val votes: Rating?,
+    val description: String?,
 )
 
 @Serializable

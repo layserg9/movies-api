@@ -12,6 +12,7 @@ data class Movie(
     val countries: List<String>,
     val poster: String,
     val kpRating: Double,
+    val description: String,
 ) {
     companion object {
         fun init(): Movie = Movie(
@@ -23,6 +24,7 @@ data class Movie(
             countries = listOf(""),
             poster = "",
             kpRating = 0.0,
+            description = "",
         )
 
         fun preview(): Movie = Movie(
@@ -34,6 +36,7 @@ data class Movie(
             countries = listOf("USA", "Mexico"),
             poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
             kpRating = 7.5,
+            description = "Описание фильма"
         )
     }
 }
