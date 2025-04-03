@@ -26,7 +26,7 @@ class ApiDataSourceImpl @Inject constructor(
         .build()
     private val apiService = retrofit.create(MovieAPI::class.java)
 
-    override suspend fun getExpectedMovies(): List<Movie> {
+    override suspend fun requestExpectedMovies(): List<Movie> {
         return try {
             val response = apiService.getMovies(limit = 30, lists = "planned-to-watch-films").docs
             response.map { movieItem ->

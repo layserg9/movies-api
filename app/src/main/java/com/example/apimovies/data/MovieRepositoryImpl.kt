@@ -1,15 +1,64 @@
 package com.example.apimovies.data
 
+import android.content.SharedPreferences
+import android.util.Log
 import com.example.apimovies.domain.ApiDataSource
+import com.example.apimovies.domain.LocalDataSource
 import com.example.apimovies.domain.MovieRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
-    private val apiDataSource: ApiDataSource
+    private val apiDataSource: ApiDataSource,
+    private val localDataSource: LocalDataSource,
+    private val sharedPreferences: SharedPreferences
 ) : MovieRepository {
+    companion object {
+        private const val LAST_UPDATE_TIME_KEY = "last_update_time"
+    }
 
+    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-//    override suspend fun getMovieList(): List<Movie> {
+    init {
+        repositoryScope.launch {
+            refreshExpectedMovieListIfNeeded()
+
+        }
+    }
+
+    override fun getExpectedMovieListFlow(): Flow<List<Movie>> {
+        return localDataSource.getExpectedMovieListFlow()
+    }
+
+    private suspend fun requestExpectedMovieList(): List<Movie> {
+        Log.d("MovieRepository", "Requesting expected movie list")
+        return apiDataSource.requestExpectedMovies()
+    }
+
+    private suspend fun refreshExpectedMovieListIfNeeded() {
+        val currentMovies = localDataSource.getExpectedMovieListFlow().first()
+        val lastUpdateTime = getLastUpdateTime()
+        if (currentMovies.isEmpty() || System.currentTimeMillis() - lastUpdateTime > 24 * 60 * 60 * 1000) {
+            val movies = requestExpectedMovieList()
+            localDataSource.storeMovies(movies)
+            saveLastUpdateTime(System.currentTimeMillis())
+        }
+    }
+
+    private fun getLastUpdateTime(): Long {
+        return sharedPreferences.getLong(LAST_UPDATE_TIME_KEY, 0L)
+    }
+
+    private fun saveLastUpdateTime(time: Long) {
+        sharedPreferences.edit().putLong(LAST_UPDATE_TIME_KEY, time).apply()
+    }
+
+    //    override suspend fun getMovieList(): List<Movie> {
 //        return try {
 //            val movieIds = listOf(333L, 5619L, 6695L)
 //            movieIds.map { fetchMovie(it).toMovie() }
@@ -17,10 +66,6 @@ class MovieRepositoryImpl @Inject constructor(
 //            emptyList()
 //        }
 //    }
-
-    override suspend fun getExpectedMovieList(): List<Movie> {
-        return apiDataSource.getExpectedMovies()
-    }
 
 //    override suspend fun getMovieListByDate(): List<Movie> {
 //        return try {

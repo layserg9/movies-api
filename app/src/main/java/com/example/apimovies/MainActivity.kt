@@ -116,13 +116,14 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate(
                                         MovieDetails(
                                             id = movie.id,
-                                            name = movie.name ?: "",
+                                            name = movie.name,
                                             alternativeName = movie.alternativeName,
                                             year = movie.year,
                                             genres = movie.genres,
                                             countries = movie.countries,
                                             poster = movie.poster,
-                                            kpRating = movie.kpRating
+                                            kpRating = movie.kpRating,
+                                            description = movie.description,
                                         )
                                     )
                                 },
@@ -141,20 +142,20 @@ class MainActivity : ComponentActivity() {
                                     countries = movieItem.countries,
                                     poster = movieItem.poster,
                                     kpRating = movieItem.kpRating,
-                                    description = movieItem.description?:"",
+                                    description = movieItem.description,
                                 )
 
                                 MovieDetailsScreen(
                                     modifier = Modifier.padding(innerPadding),
                                     id = movie.id,
-                                    name = movie.name ?: "",
+                                    name = movie.name,
                                     alternativeName = movie.alternativeName,
                                     year = movie.year,
                                     genres = movie.genres,
                                     countries = movie.countries,
                                     poster = movie.poster,
                                     kpRating = movie.kpRating,
-                                    description = movieItem.description?: "",
+                                    description = movieItem.description,
                                 )
                             } ?: run {
                                 CircularProgressIndicator()
@@ -195,7 +196,8 @@ val bottomNavigationItems = listOf(
             genres = listOf("horror, action"),
             countries = listOf("Russia, USA"),
             poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
-            kpRating = 10.0
+            kpRating = 10.0,
+            description = "Это описание",
         ),
         selectedIcon = Icons.Filled.FavoriteBorder,
         unselectedIcon = Icons.Outlined.FavoriteBorder,
@@ -221,7 +223,7 @@ data class MovieDetails(
     val countries: List<String>,
     val poster: String,
     val kpRating: Double,
-    val description: String? = null,
+    val description: String,
 )
 
 data class BottomNavigationItem(
