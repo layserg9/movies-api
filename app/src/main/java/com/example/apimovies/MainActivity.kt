@@ -132,34 +132,18 @@ class MainActivity : ComponentActivity() {
                         composable<MovieDetails> {
                             val args = it.toRoute<MovieDetails>()
 
-                            args.let { movieItem ->
-                                val movie = Movie(
-                                    id = movieItem.id,
-                                    name = movieItem.name,
-                                    alternativeName = movieItem.alternativeName,
-                                    year = movieItem.year,
-                                    genres = movieItem.genres,
-                                    countries = movieItem.countries,
-                                    poster = movieItem.poster,
-                                    kpRating = movieItem.kpRating,
-                                    description = movieItem.description,
-                                )
-
-                                MovieDetailsScreen(
-                                    modifier = Modifier.padding(innerPadding),
-                                    id = movie.id,
-                                    name = movie.name,
-                                    alternativeName = movie.alternativeName,
-                                    year = movie.year,
-                                    genres = movie.genres,
-                                    countries = movie.countries,
-                                    poster = movie.poster,
-                                    kpRating = movie.kpRating,
-                                    description = movieItem.description,
-                                )
-                            } ?: run {
-                                CircularProgressIndicator()
-                            }
+                            MovieDetailsScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                id = args.id,
+                                name = args.name,
+                                alternativeName = args.alternativeName,
+                                year = args.year,
+                                genres = args.genres,
+                                countries = args.countries,
+                                poster = args.poster,
+                                kpRating = args.kpRating,
+                                description = args.description,
+                            )
                         }
                     }
                 }
