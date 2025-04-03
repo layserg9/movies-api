@@ -7,4 +7,5 @@ interface MovieRepository {
 //    suspend fun searchMovieList(): List<Movie>
 //    suspend fun getMovieListByDate(): List<Movie>
      fun getExpectedMovieListFlow(): Flow<List<Movie>>
+     suspend fun requestMoviesBySearch(movieName: String): List<Movie>
 }

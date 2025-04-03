@@ -1,5 +1,6 @@
 package com.example.apimovies.data
 
+import android.util.Log
 import com.example.apimovies.domain.ApiDataParser
 import com.example.apimovies.domain.ApiDataSource
 import com.example.apimovies.retrofit.AuthInterceptor
@@ -28,11 +29,23 @@ class ApiDataSourceImpl @Inject constructor(
 
     override suspend fun requestExpectedMovies(): List<Movie> {
         return try {
-            val response = apiService.getMovies(limit = 30, lists = "planned-to-watch-films").docs
+            val response = apiService.getMovies(limit = 50, lists = "planned-to-watch-films").docs
             response.map { movieItem ->
                 apiDataParser.parseMovie(movieItem)
             }
         } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    override suspend fun requestMoviesBySearch(movieName: String): List<Movie> {
+        return try{
+            val response = apiService.getMoviesByName(movieName = movieName).docs
+            response.map{ movieItem ->
+                apiDataParser.parseMovie(movieItem)
+            }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Network error", e)
             emptyList()
         }
     }

@@ -40,6 +40,11 @@ class MovieRepositoryImpl @Inject constructor(
         return apiDataSource.requestExpectedMovies()
     }
 
+    override suspend fun requestMoviesBySearch(movieName: String): List<Movie> {
+        Log.d("MovieRepository", "Requesting movie by name")
+        return apiDataSource.requestMoviesBySearch(movieName = movieName)
+    }
+
     private suspend fun refreshExpectedMovieListIfNeeded() {
         val currentMovies = localDataSource.getExpectedMovieListFlow().first()
         val lastUpdateTime = getLastUpdateTime()
