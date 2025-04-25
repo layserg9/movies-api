@@ -1,10 +1,15 @@
 package com.example.apimovies.data
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.room.Room
+import com.example.apimovies.data.local.LocalDataBase
+import com.example.apimovies.data.local.MovieEntity
 import com.example.apimovies.domain.ApiDataSource
 import com.example.apimovies.domain.LocalDataSource
 import com.example.apimovies.domain.MovieRepository
+import com.example.apimovies.retrofit.MovieItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -27,7 +32,6 @@ class MovieRepositoryImpl @Inject constructor(
     init {
         repositoryScope.launch {
             refreshExpectedMovieListIfNeeded()
-
         }
     }
 
@@ -49,6 +53,7 @@ class MovieRepositoryImpl @Inject constructor(
         val currentMovies = localDataSource.getExpectedMovieListFlow().first()
         val lastUpdateTime = getLastUpdateTime()
         if (currentMovies.isEmpty() || System.currentTimeMillis() - lastUpdateTime > 24 * 60 * 60 * 1000) {
+            Log.d("MovieRepository", "refreshExpectedMovieListIfNeeded")
             val movies = requestExpectedMovieList()
             localDataSource.storeMovies(movies)
             saveLastUpdateTime(System.currentTimeMillis())
@@ -61,6 +66,15 @@ class MovieRepositoryImpl @Inject constructor(
 
     private fun saveLastUpdateTime(time: Long) {
         sharedPreferences.edit().putLong(LAST_UPDATE_TIME_KEY, time).apply()
+    }
+
+    private fun test(items: List<MovieEntity>, context: Context){
+        val db = Room.databaseBuilder(
+            context = context,
+            LocalDataBase::class.java, "database-name"
+        ).build()
+
+        db.movieDao().insertAll(*items.toTypedArray())
     }
 
     //    override suspend fun getMovieList(): List<Movie> {

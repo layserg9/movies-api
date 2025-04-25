@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.retrofit2)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation(libs.room)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
