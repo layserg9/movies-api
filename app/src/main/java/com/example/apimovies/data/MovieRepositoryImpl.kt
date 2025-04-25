@@ -1,15 +1,10 @@
 package com.example.apimovies.data
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.room.Room
-import com.example.apimovies.data.local.LocalDataBase
-import com.example.apimovies.data.local.MovieEntity
 import com.example.apimovies.domain.ApiDataSource
 import com.example.apimovies.domain.LocalDataSource
 import com.example.apimovies.domain.MovieRepository
-import com.example.apimovies.retrofit.MovieItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -21,7 +16,7 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val apiDataSource: ApiDataSource,
     private val localDataSource: LocalDataSource,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
 ) : MovieRepository {
     companion object {
         private const val LAST_UPDATE_TIME_KEY = "last_update_time"
@@ -68,13 +63,20 @@ class MovieRepositoryImpl @Inject constructor(
         sharedPreferences.edit().putLong(LAST_UPDATE_TIME_KEY, time).apply()
     }
 
-    private fun test(items: List<MovieEntity>, context: Context){
-        val db = Room.databaseBuilder(
-            context = context,
-            LocalDataBase::class.java, "database-name"
-        ).build()
+    override suspend fun addMovieToFavorites(movie: Movie) {
+        localDataSource.addMovieToFavorites(movie)
+    }
 
-        db.movieDao().insertAll(*items.toTypedArray())
+    override suspend fun removeMovieFromFavorites(movie: Movie) {
+        localDataSource.removeMovieFromFavorites(movie)
+    }
+
+    override suspend fun cleanFavorites() {
+        localDataSource.cleanFavorites()
+    }
+
+    override suspend fun getAllFavorites(): List<Movie> {
+        return localDataSource.getAllFavorites()
     }
 
     //    override suspend fun getMovieList(): List<Movie> {

@@ -38,9 +38,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.apimovies.data.Movie
+import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
 import com.example.apimovies.presentation.MainListScreenViewModelImpl
+import com.example.apimovies.presentation.compose.FavoritesListScreen
 import com.example.apimovies.presentation.compose.MainListScreen
 import com.example.apimovies.presentation.compose.MovieDetailsScreen
+import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
 import com.example.apimovies.presentation.model.MainListScreenViewModel
 import com.example.apimovies.ui.theme.APIMOVIESTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -129,6 +132,16 @@ class MainActivity : ComponentActivity() {
                                 },
                             )
                         }
+                        composable<FavoritesList> {
+                            val viewModel: FavoritesListScreenViewModel =
+                                hiltViewModel<FavoritesListScreenViewModelImpl>()
+                            val list by viewModel.viewState
+
+                            FavoritesListScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                list = list
+                            )
+                        }
                         composable<MovieDetails> {
                             val args = it.toRoute<MovieDetails>()
 
@@ -172,17 +185,7 @@ val bottomNavigationItems = listOf(
     ),
     BottomNavigationItem(
         title = "Избранное",
-        route = MovieDetails(
-            id = 123123123,
-            name = "movieItem.name",
-            alternativeName = "movieItem.alternativeName",
-            year = 2025L,
-            genres = listOf("horror, action"),
-            countries = listOf("Russia, USA"),
-            poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
-            kpRating = 10.0,
-            description = "Это описание",
-        ),
+        route = FavoritesList,
         selectedIcon = Icons.Filled.FavoriteBorder,
         unselectedIcon = Icons.Outlined.FavoriteBorder,
         badgeCount = 2
@@ -196,6 +199,9 @@ val bottomNavigationItems = listOf(
 
 @Serializable
 object MainList
+
+@Serializable
+object FavoritesList
 
 @Serializable
 data class MovieDetails(

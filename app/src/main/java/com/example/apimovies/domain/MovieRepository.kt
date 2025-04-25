@@ -8,4 +8,8 @@ interface MovieRepository {
 //    suspend fun getMovieListByDate(): List<Movie>
      fun getExpectedMovieListFlow(): Flow<List<Movie>>
      suspend fun requestMoviesBySearch(movieName: String): List<Movie>
+     suspend fun addMovieToFavorites(movie: Movie)
+     suspend fun removeMovieFromFavorites(movie: Movie)
+     suspend fun getAllFavorites(): List<Movie>
+     suspend fun cleanFavorites()
 }

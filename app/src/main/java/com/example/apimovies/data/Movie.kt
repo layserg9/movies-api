@@ -1,5 +1,6 @@
 package com.example.apimovies.data
 
+import com.example.apimovies.data.local.MovieEntity
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -40,3 +41,15 @@ data class Movie(
         )
     }
 }
+
+fun Movie.toEntity(): MovieEntity = MovieEntity(
+    id = this.id,
+    name = this.name,
+    alternativeName = this.alternativeName,
+    year = this.year,
+    genres = this.genres,
+    countries = this.countries,
+    poster = this.poster,
+    kpRating = this.kpRating,
+    description = this.description,
+)

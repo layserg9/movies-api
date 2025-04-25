@@ -85,4 +85,5 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    kapt (libs.room.compiler)
 }
