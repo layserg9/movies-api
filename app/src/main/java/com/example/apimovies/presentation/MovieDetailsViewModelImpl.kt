@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apimovies.data.Movie
 import com.example.apimovies.domain.MovieRepository
-import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
+import com.example.apimovies.presentation.model.MovieDetailsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesListScreenViewModelImpl @Inject constructor(
+class MovieDetailsViewModelImpl @Inject constructor(
     private val movieRepository: MovieRepository
-) : FavoritesListScreenViewModel, ViewModel() {
+) : MovieDetailsViewModel, ViewModel() {
     private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
     private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
 
@@ -31,6 +31,12 @@ class FavoritesListScreenViewModelImpl @Inject constructor(
     override val viewState: State<ImmutableList<Movie>>
         @Composable
         get() = movieList.collectAsState(initial = persistentListOf())
+
+    override fun addToFavorite(movie: Movie) {
+        viewModelScope.launch {
+            movieRepository.addMovieToFavorites(movie)
+        }
+    }
 
     private fun loadMovies() {
         viewModelScope.launch {

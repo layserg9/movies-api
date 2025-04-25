@@ -3,13 +3,15 @@ package com.example.apimovies.data
 import com.example.apimovies.data.local.MovieDao
 import com.example.apimovies.data.local.toMovie
 import com.example.apimovies.domain.LocalDataSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LocalDataSourceImpl @Inject constructor(
     private val movieDao: MovieDao,
-): LocalDataSource {
+) : LocalDataSource {
     private val expectedMoviesFlow = MutableStateFlow<List<Movie>>(emptyList())
     private val movieDataMap = mutableMapOf<Long, Movie>()
 
@@ -24,7 +26,7 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun addMovieToFavorites(movie: Movie) {
-        movieDao.insertMovie(movie = movie.toEntity())
+        movieDao.insertMovie(movie.toEntity())
     }
 
     override suspend fun removeMovieFromFavorites(movie: Movie) {
@@ -36,7 +38,7 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getAllFavorites(): List<Movie> {
-        return movieDao.getAll().map {it.toMovie()}
+        return movieDao.getAll().map { it.toMovie() }
     }
 
     private fun notifyDataChanged() {

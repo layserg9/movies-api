@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +32,7 @@ fun MovieDetailsScreen(
     poster: String,
     kpRating: Double,
     description: String,
+    addToFavorites: (Movie) -> Unit = {},
 ) {
     val movie = Movie(
         id = id,
@@ -53,6 +56,9 @@ fun MovieDetailsScreen(
             contentDescription = "",
             contentScale = ContentScale.FillWidth
         )
+        Button(
+            modifier = Modifier.size(30.dp),
+            onClick = { addToFavorites(movie) }) {}
         Text(text = movie.name, style = MaterialTheme.typography.titleMedium)
         Text(
             text = "${movie.alternativeName}, ${movie.year}",
@@ -69,7 +75,7 @@ fun MovieDetailsScreen(
 
 @Composable
 @Preview
-fun MovieDetailsScreenPreview(){
+fun MovieDetailsScreenPreview() {
     APIMOVIESTheme {
         MovieDetailsScreen(
             id = 1234L,

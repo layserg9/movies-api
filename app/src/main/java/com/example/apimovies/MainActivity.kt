@@ -40,11 +40,13 @@ import androidx.navigation.toRoute
 import com.example.apimovies.data.Movie
 import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
 import com.example.apimovies.presentation.MainListScreenViewModelImpl
+import com.example.apimovies.presentation.MovieDetailsViewModelImpl
 import com.example.apimovies.presentation.compose.FavoritesListScreen
 import com.example.apimovies.presentation.compose.MainListScreen
 import com.example.apimovies.presentation.compose.MovieDetailsScreen
 import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
 import com.example.apimovies.presentation.model.MainListScreenViewModel
+import com.example.apimovies.presentation.model.MovieDetailsViewModel
 import com.example.apimovies.ui.theme.APIMOVIESTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
@@ -139,11 +141,29 @@ class MainActivity : ComponentActivity() {
 
                             FavoritesListScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                list = list
+                                list = list,
+                                onMovieClick = { movie ->
+                                    navController.navigate(
+                                        MovieDetails(
+                                            id = movie.id,
+                                            name = movie.name,
+                                            alternativeName = movie.alternativeName,
+                                            year = movie.year,
+                                            genres = movie.genres,
+                                            countries = movie.countries,
+                                            poster = movie.poster,
+                                            kpRating = movie.kpRating,
+                                            description = movie.description,
+                                        )
+                                    )
+                                },
                             )
                         }
                         composable<MovieDetails> {
                             val args = it.toRoute<MovieDetails>()
+
+                            val viewModel: MovieDetailsViewModel =
+                                hiltViewModel<MovieDetailsViewModelImpl>()
 
                             MovieDetailsScreen(
                                 modifier = Modifier.padding(innerPadding),
@@ -156,6 +176,9 @@ class MainActivity : ComponentActivity() {
                                 poster = args.poster,
                                 kpRating = args.kpRating,
                                 description = args.description,
+                                addToFavorites = { movie ->
+                                    viewModel.addToFavorite(movie)
+                                }
                             )
                         }
                     }

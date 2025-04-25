@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +41,7 @@ import kotlinx.collections.immutable.ImmutableList
 fun FavoritesListScreen(
     modifier: Modifier = Modifier,
     list: ImmutableList<Movie>,
-    onItemClick: (Movie) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
 ) {
     LazyColumn(
         modifier = modifier
@@ -56,7 +55,7 @@ fun FavoritesListScreen(
         items(items = list, key = { it.id }) { movieItem ->
             MovieItem(
                 movie = movieItem,
-                onClick = onItemClick
+                onClick = onMovieClick
             )
         }
     }
