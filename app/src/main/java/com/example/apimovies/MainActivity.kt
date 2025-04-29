@@ -129,6 +129,7 @@ class MainActivity : ComponentActivity() {
                                             poster = movie.poster,
                                             kpRating = movie.kpRating,
                                             description = movie.description,
+                                            movieLength = movie.movieLength,
                                         )
                                     )
                                 },
@@ -154,6 +155,7 @@ class MainActivity : ComponentActivity() {
                                             poster = movie.poster,
                                             kpRating = movie.kpRating,
                                             description = movie.description,
+                                            movieLength = movie.movieLength,
                                         )
                                     )
                                 },
@@ -176,6 +178,7 @@ class MainActivity : ComponentActivity() {
                                 poster = args.poster,
                                 kpRating = args.kpRating,
                                 description = args.description,
+                                movieLength = args.movieLength,
                                 addToFavorites = { movie ->
                                     viewModel.addToFavorite(movie)
                                 }
@@ -237,6 +240,7 @@ data class MovieDetails(
     val poster: String,
     val kpRating: Double,
     val description: String,
+    val movieLength: String,
 )
 
 data class BottomNavigationItem(

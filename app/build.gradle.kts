@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.room)
+    implementation(libs.material.icons)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

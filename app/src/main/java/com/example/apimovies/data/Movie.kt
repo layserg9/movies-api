@@ -14,7 +14,8 @@ data class Movie(
     val poster: String,
     val kpRating: Double,
     val description: String,
-) {
+    val movieLength: String,
+    ) {
     companion object {
         fun init(): Movie = Movie(
             id = 0L,
@@ -26,6 +27,7 @@ data class Movie(
             poster = "",
             kpRating = 0.0,
             description = "",
+            movieLength = "",
         )
 
         fun preview(): Movie = Movie(
@@ -37,7 +39,8 @@ data class Movie(
             countries = listOf("USA", "Mexico"),
             poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
             kpRating = 7.5,
-            description = "Описание фильма"
+            description = "Описание фильма",
+            movieLength = "1 ч 35 мин"
         )
     }
 }
@@ -52,4 +55,5 @@ fun Movie.toEntity(): MovieEntity = MovieEntity(
     poster = this.poster,
     kpRating = this.kpRating,
     description = this.description,
+    movieLength = this.movieLength,
 )

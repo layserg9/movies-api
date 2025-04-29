@@ -15,6 +15,7 @@ data class MovieEntity(
     val poster: String,
     val kpRating: Double,
     val description: String,
+    val movieLength: String,
 )
 
 fun MovieEntity.toMovie(): Movie = Movie(
@@ -27,4 +28,5 @@ fun MovieEntity.toMovie(): Movie = Movie(
     poster = this.poster,
     kpRating = this.kpRating,
     description = this.description,
+    movieLength = this.movieLength,
 )
