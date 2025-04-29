@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,6 +53,18 @@ fun FavoritesListScreen(
         contentPadding = PaddingValues(horizontal = 10.dp)
 
     ) {
+        if (list.isEmpty()) {
+            item {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 25.dp)
+                        .fillMaxWidth(),
+                    text = "Список избранного пуст",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+        }
         items(items = list, key = { it.id }) { movieItem ->
             MovieItem(
                 movie = movieItem,
@@ -105,7 +118,7 @@ private fun MovieInfo(
     movie: Movie
 ) {
     val text = listOf(movie.alternativeName, movie.year.takeIf { it != 0L }.toString())
-        .filter { it.isNotBlank()}
+        .filter { it.isNotBlank() }
         .joinToString(", ")
 
     Column(
