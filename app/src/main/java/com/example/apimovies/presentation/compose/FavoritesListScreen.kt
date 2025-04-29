@@ -59,7 +59,7 @@ fun FavoritesListScreen(
                     modifier = Modifier
                         .padding(top = 25.dp)
                         .fillMaxWidth(),
-                    text = "Список избранного пуст",
+                    text = "Список избранного пуст \uD83E\uDD37\u200D♂\uFE0F",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium,
                 )
