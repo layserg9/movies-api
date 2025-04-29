@@ -6,10 +6,12 @@ import com.example.apimovies.data.Movie
 import com.example.apimovies.domain.MovieRepository
 import com.example.apimovies.presentation.model.MovieDetailsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +27,11 @@ class MovieDetailsViewModelImpl @Inject constructor(
     }
 
     override fun onFavoriteClicked(movie: Movie) {
-        if (isFavorite(movie.id)) removeFromFavorites(movie) else addToFavorites(movie)
+        if (isFavorite(movie.id)) {
+            removeFromFavorites(movie)
+        } else {
+            addToFavorites(movie)
+        }
     }
 
     override fun isFavorite(movieId: Long): Boolean {
@@ -34,14 +40,18 @@ class MovieDetailsViewModelImpl @Inject constructor(
 
     private fun addToFavorites(movie: Movie) {
         viewModelScope.launch {
-            movieRepository.addMovieToFavorites(movie)
+            withContext(Dispatchers.IO) {
+                movieRepository.addMovieToFavorites(movie)
+            }
             _favoriteIds.update { it + movie.id }
         }
     }
 
     private fun removeFromFavorites(movie: Movie) {
         viewModelScope.launch {
-            movieRepository.removeMovieFromFavorites(movie)
+            withContext(Dispatchers.IO) {
+                movieRepository.removeMovieFromFavorites(movie)
+            }
             _favoriteIds.update { it - movie.id }
         }
     }
