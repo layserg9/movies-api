@@ -15,7 +15,8 @@ data class Movie(
     val kpRating: Double,
     val description: String,
     val movieLength: String,
-    ) {
+    val isFavorite: Boolean = false
+) {
     companion object {
         fun init(): Movie = Movie(
             id = 0L,

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -47,7 +47,8 @@ fun MovieDetailsScreen(
     kpRating: Double,
     description: String,
     movieLength: String,
-    addToFavorites: (Movie) -> Unit = {},
+    onFavoriteClicked: (Movie) -> Unit = {},
+    isFavorite: Boolean,
 ) {
     val movie = Movie(
         id = id,
@@ -91,11 +92,11 @@ fun MovieDetailsScreen(
             movie = movie,
             animationState = animationState,
         )
-
-        Button(
-            modifier = Modifier.size(30.dp),
-            onClick = { addToFavorites(movie) }
-        ) {}
+        ExplodingFavoriteButton(
+            isFavorite = isFavorite,
+            onToggleFavorite = { onFavoriteClicked(movie) },
+            modifier = Modifier.size(32.dp)
+        )
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -127,7 +128,12 @@ private fun MovieInfo(
                 animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
             ) + fadeIn(animationSpec = tween(500))
         ) {
-            Text(text = movie.name, style = MaterialTheme.typography.titleMedium)
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = movie.name,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+            )
         }
 
         AnimatedVisibility(
@@ -228,7 +234,8 @@ fun MovieDetailsScreenPreview() {
             poster = "https://image.openmoviedb.com/kinopoisk-images/4303601/3f89baba-e34d-4526-be68-bbadf0494212/x1000",
             kpRating = 7.5,
             description = "Описание фильма",
-            movieLength = "1 ч 35 мин"
+            movieLength = "1 ч 35 мин",
+            isFavorite = true,
         )
     }
 }

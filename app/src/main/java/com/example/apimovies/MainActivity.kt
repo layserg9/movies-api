@@ -2,7 +2,6 @@ package com.example.apimovies
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
@@ -20,12 +19,12 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -50,6 +49,7 @@ import com.example.apimovies.presentation.model.MovieDetailsViewModel
 import com.example.apimovies.ui.theme.APIMOVIESTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 
 @AndroidEntryPoint
@@ -163,9 +163,11 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<MovieDetails> {
                             val args = it.toRoute<MovieDetails>()
-
                             val viewModel: MovieDetailsViewModel =
                                 hiltViewModel<MovieDetailsViewModelImpl>()
+                            val isFavorite by viewModel.favoriteIds
+                                .map { it.contains(args.id) }
+                                .collectAsState(initial = false)
 
                             MovieDetailsScreen(
                                 modifier = Modifier.padding(innerPadding),
@@ -179,8 +181,9 @@ class MainActivity : ComponentActivity() {
                                 kpRating = args.kpRating,
                                 description = args.description,
                                 movieLength = args.movieLength,
-                                addToFavorites = { movie ->
-                                    viewModel.addToFavorite(movie)
+                                isFavorite = isFavorite,
+                                onFavoriteClicked = { movie ->
+                                    viewModel.onFavoriteClicked(movie)
                                 }
                             )
                         }
