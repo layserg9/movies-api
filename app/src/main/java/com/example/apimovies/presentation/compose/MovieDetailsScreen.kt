@@ -66,7 +66,7 @@ fun MovieDetailsScreen(
     val animationState = remember { mutableStateOf(AnimationState()) }
 
     LaunchedEffect(Unit) {
-        delay(300)
+        delay(100)
         animationState.value = animationState.value.copy(titleVisible = true)
         delay(100)
         animationState.value = animationState.value.copy(row2Visible = true)
@@ -125,8 +125,8 @@ private fun MovieInfo(
             visible = animationState.value.titleVisible,
             enter = slideInHorizontally(
                 initialOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(500))
+                animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(300))
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -140,8 +140,8 @@ private fun MovieInfo(
             visible = animationState.value.row2Visible,
             enter = slideInHorizontally(
                 initialOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(500))
+                animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(300))
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -165,8 +165,8 @@ private fun MovieInfo(
             visible = animationState.value.row3Visible,
             enter = slideInHorizontally(
                 initialOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(500))
+                animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(300))
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -190,8 +190,8 @@ private fun MovieInfo(
             visible = animationState.value.row4Visible,
             enter = slideInHorizontally(
                 initialOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(500))
+                animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(300))
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

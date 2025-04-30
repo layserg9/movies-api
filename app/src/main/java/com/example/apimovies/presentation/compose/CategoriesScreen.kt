@@ -70,7 +70,7 @@ private fun CategoryItem(
                 .aspectRatio(1f / 1f)
                 .padding(25.dp),
             model = category.cover,
-            contentDescription = ""
+            contentDescription = "",
         )
         Text(
             modifier = Modifier
