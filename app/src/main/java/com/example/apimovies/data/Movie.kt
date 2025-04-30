@@ -1,6 +1,7 @@
 package com.example.apimovies.data
 
 import com.example.apimovies.data.local.MovieEntity
+import com.example.apimovies.retrofit.Cover
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -45,6 +46,18 @@ data class Movie(
         )
     }
 }
+
+@Serializable
+data class Categories(
+    val id: String,
+    val name: String,
+    val slug: String,
+    val category: String? = null,
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
+    val moviesCount: Int? = null,
+    val cover: String? = null
+)
 
 fun Movie.toEntity(): MovieEntity = MovieEntity(
     id = this.id,

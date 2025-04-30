@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.apimovies.domain.ApiDataParser
 import com.example.apimovies.domain.ApiDataSource
 import com.example.apimovies.retrofit.AuthInterceptor
+import com.example.apimovies.retrofit.CategoriesItem
 import com.example.apimovies.retrofit.MovieAPI
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -34,6 +35,19 @@ class ApiDataSourceImpl @Inject constructor(
                 apiDataParser.parseMovie(movieItem)
             }
         } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    override suspend fun requestMoviesCategories(): List<Categories> {
+        return try {
+            val response = apiService.getMoviesCategories().docs
+            response.map { categoriesItem ->
+                Log.d("MovieRepository", "requestMoviesCategories: $categoriesItem")
+                apiDataParser.parseCategories(categoriesItem)
+            }
+        } catch (e: Exception) {
+            Log.d("MovieRepository", "Exception categories request: $e")
             emptyList()
         }
     }

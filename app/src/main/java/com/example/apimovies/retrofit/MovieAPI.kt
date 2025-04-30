@@ -28,4 +28,10 @@ interface MovieAPI {
         @Query("limit") limit: Int? = 10,
         @Query("lists") lists: String
     ): MovieResponse
+
+    @GET("v1.4/list")
+    suspend fun getMoviesCategories(
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20,
+    ): CategoriesResponse
 }

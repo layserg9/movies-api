@@ -1,5 +1,6 @@
 package com.example.apimovies.retrofit
 
+import com.example.apimovies.data.Categories
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,6 +19,24 @@ data class MovieItem(
     val status: String?,
     val votes: Rating?,
     val description: String?,
+)
+
+@Serializable
+data class CategoriesItem(
+    val id: String,
+    val name: String,
+    val slug: String,
+    val category: String? = null,
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
+    val moviesCount: Int? = null,
+    val cover: Cover? = null
+)
+
+@Serializable
+data class Cover(
+    val url: String? = null,
+    val previewUrl: String? = null
 )
 
 @Serializable
@@ -48,4 +67,9 @@ data class Poster(
 @Serializable
 data class MovieResponse(
     val docs: List<MovieItem>
+)
+
+@Serializable
+data class CategoriesResponse(
+    val docs: List<CategoriesItem>
 )

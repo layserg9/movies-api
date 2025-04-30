@@ -1,6 +1,7 @@
 package com.example.apimovies.data
 
 import com.example.apimovies.domain.ApiDataParser
+import com.example.apimovies.retrofit.CategoriesItem
 import com.example.apimovies.retrofit.MovieItem
 import javax.inject.Inject
 
@@ -17,6 +18,15 @@ class ApiDataParserImpl @Inject constructor(): ApiDataParser {
             kpRating = movieItem.rating?.kp ?: 0.0,
             description = movieItem.description ?: "",
             movieLength = formatMovieLength(movieItem.movieLength)
+        )
+    }
+
+    override fun parseCategories(categories: CategoriesItem): Categories {
+        return Categories(
+            id = categories.id,
+            name = categories.name,
+            slug = categories.slug,
+            cover = categories.cover?.url?: ""
         )
     }
 

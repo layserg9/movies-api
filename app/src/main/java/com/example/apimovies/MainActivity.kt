@@ -37,12 +37,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.apimovies.data.Movie
+import com.example.apimovies.presentation.CategoriesViewModelImpl
 import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
 import com.example.apimovies.presentation.MainListScreenViewModelImpl
 import com.example.apimovies.presentation.MovieDetailsViewModelImpl
+import com.example.apimovies.presentation.compose.CategoriesScreen
 import com.example.apimovies.presentation.compose.FavoritesListScreen
 import com.example.apimovies.presentation.compose.MainListScreen
 import com.example.apimovies.presentation.compose.MovieDetailsScreen
+import com.example.apimovies.presentation.model.CategoriesViewModel
 import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
 import com.example.apimovies.presentation.model.MainListScreenViewModel
 import com.example.apimovies.presentation.model.MovieDetailsViewModel
@@ -187,6 +190,16 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable<Categories> {
+                            val viewModel: CategoriesViewModel =
+                                hiltViewModel<CategoriesViewModelImpl>()
+                            val list by viewModel.viewState
+
+                            CategoriesScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                list = list,
+                            )
+                        }
                     }
                 }
             }
@@ -220,7 +233,7 @@ val bottomNavigationItems = listOf(
         badgeCount = 2
     ), BottomNavigationItem(
         title = "Иное",
-        route = MainList,
+        route = Categories,
         selectedIcon = Icons.Filled.Build,
         unselectedIcon = Icons.Outlined.Build,
     )
@@ -231,6 +244,9 @@ object MainList
 
 @Serializable
 object FavoritesList
+
+@Serializable
+object Categories
 
 @Serializable
 data class MovieDetails(

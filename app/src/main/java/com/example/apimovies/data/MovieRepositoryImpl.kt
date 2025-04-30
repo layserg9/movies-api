@@ -34,6 +34,12 @@ class MovieRepositoryImpl @Inject constructor(
         return localDataSource.getExpectedMovieListFlow()
     }
 
+    override suspend fun requestCategories(): List<Categories> {
+        Log.d("MovieRepository", "Requesting Categories")
+        return apiDataSource.requestMoviesCategories()
+    }
+
+
     private suspend fun requestExpectedMovieList(): List<Movie> {
         Log.d("MovieRepository", "Requesting expected movie list")
         return apiDataSource.requestExpectedMovies()
