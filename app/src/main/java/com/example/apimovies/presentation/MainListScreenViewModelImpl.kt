@@ -34,7 +34,7 @@ class MainListScreenViewModelImpl @Inject constructor(
 
     private fun loadMovies() {
         viewModelScope.launch {
-            val movies = movieRepository.requestAllExpectedMovies()
+            val movies = movieRepository.requestExpectedMovieList(limit = 250)
             _movieList.value = movies.filter { it.poster.isNotBlank() }.toImmutableList()
         }
     }

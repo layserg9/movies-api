@@ -1,5 +1,6 @@
 package com.example.apimovies.presentation.compose
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,9 +22,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
+import com.example.apimovies.R
+import com.example.apimovies.data.Categories
 import com.example.apimovies.data.Movie
 import com.example.apimovies.ui.theme.Elevation08DpLight
 import com.example.apimovies.ui.theme.OnPrimaryLightLight
@@ -32,9 +37,39 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun AlternativeScreen(
     modifier: Modifier = Modifier,
+    moviesList: ImmutableList<Movie>,
+    categoriesList: List<Categories>,
+    onMovieClick: (Movie) -> Unit = {},
+    onCategoryClick: (Categories) -> Unit = {},
+    onShowMoreNewMoviesClick: () -> Unit = {},
+    onShowMoreCategoriesClick: () -> Unit
+) {
+    val context = LocalContext.current
+
+    Column(modifier = modifier) {
+        NewMovies(
+            list = moviesList,
+            onMovieClick = onMovieClick,
+            onShowMoreClick = onShowMoreNewMoviesClick,
+            context = context,
+        )
+        Spacer(modifier = Modifier.height(25.dp))
+        CategoriesList(
+            context = context,
+            onCategoryClick = onCategoryClick,
+            onShowMoreClick = onShowMoreCategoriesClick,
+            list = categoriesList,
+        )
+    }
+}
+
+@Composable
+private fun NewMovies(
+    modifier: Modifier = Modifier,
     list: ImmutableList<Movie>,
-    onItemClick: (Movie) -> Unit = {},
-    onShowMoreClick: () -> Unit = {}
+    onMovieClick: (Movie) -> Unit = {},
+    onShowMoreClick: () -> Unit = {},
+    context: Context,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -51,10 +86,9 @@ fun AlternativeScreen(
             Text(
                 modifier = Modifier
                     .padding(end = 10.dp)
-                    .clickable { onShowMoreClick() }
-                ,
+                    .clickable { onShowMoreClick() },
                 text = "смотреть все",
-                color = Color.Magenta,
+                color = Color(ContextCompat.getColor(context, R.color.teal_700)),
                 style = MaterialTheme.typography.titleSmall,
             )
         }
@@ -74,12 +108,63 @@ fun AlternativeScreen(
             items(items = list, key = { it.id }) { movieItem ->
                 MovieItem(
                     movie = movieItem,
-                    onClick = onItemClick
+                    onClick = onMovieClick
                 )
             }
         }
     }
+}
 
+@Composable
+private fun CategoriesList(
+    modifier: Modifier = Modifier,
+    list: List<Categories>,
+    onCategoryClick: (Categories) -> Unit = {},
+    onShowMoreClick: () -> Unit = {},
+    context: Context,
+) {
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = "Категории",
+                style = MaterialTheme.typography.titleMedium,
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .clickable { onShowMoreClick() },
+                text = "смотреть все",
+                color = Color(ContextCompat.getColor(context, R.color.teal_700)),
+                style = MaterialTheme.typography.titleSmall,
+            )
+        }
+
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(color = Elevation08DpLight),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.Top,
+            contentPadding = PaddingValues(horizontal = 10.dp)
+        ) {
+            items(items = list, key = { it.id }) { categoryItem ->
+                CategoryItem(
+                    category = categoryItem,
+                    onClick = onCategoryClick,
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -106,6 +191,37 @@ private fun MovieItem(
         )
         Text(
             text = movie.name,
+            style = MaterialTheme.typography.bodySmall,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+private fun CategoryItem(
+    modifier: Modifier = Modifier,
+    category: Categories,
+    onClick: (Categories) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .width(150.dp)
+            .background(color = OnPrimaryLightLight)
+            .clickable { onClick(category) },
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
+            model = category.cover,
+            contentDescription = "",
+            contentScale = ContentScale.FillBounds
+        )
+        Text(
+            text = category.name,
             style = MaterialTheme.typography.bodySmall,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis

@@ -116,14 +116,16 @@ class MainActivity : ComponentActivity() {
                         startDestination = AltList
                     ) {
                         composable<AltList> {
-                            val viewModel: AltListScreenViewModel =
+                            val altListViewModel: AltListScreenViewModel =
                                 hiltViewModel<AltListScreenViewModelImpl>()
-                            val list by viewModel.viewState
+                            val moviesList by altListViewModel.moviesViewState
+                            val categoriesList by altListViewModel.categoriesViewState
 
                             AlternativeScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                list = list,
-                                onItemClick = { movie ->
+                                moviesList = moviesList,
+                                categoriesList = categoriesList,
+                                onMovieClick = { movie ->
                                     navController.navigate(
                                         MovieDetails(
                                             id = movie.id,
@@ -139,7 +141,8 @@ class MainActivity : ComponentActivity() {
                                         )
                                     )
                                 },
-                                onShowMoreClick = { navController.navigate(MainList) }
+                                onShowMoreNewMoviesClick = { navController.navigate(MainList) },
+                                onShowMoreCategoriesClick = { navController.navigate(Categories) }
                             )
                         }
                         composable<MainList> {

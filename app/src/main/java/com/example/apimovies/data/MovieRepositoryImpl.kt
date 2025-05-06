@@ -34,19 +34,14 @@ class MovieRepositoryImpl @Inject constructor(
         return localDataSource.getExpectedMovieListFlow()
     }
 
-    override suspend fun requestCategories(): List<Categories> {
+    override suspend fun requestCategories(limit: Int): List<Categories> {
         Log.d("MovieRepository", "Requesting Categories")
-        return apiDataSource.requestMoviesCategories()
+        return apiDataSource.requestMoviesCategories(limit = limit, category = "Онлайн-кинотеатр")
     }
 
-
-    private suspend fun requestExpectedMovieList(): List<Movie> {
+    override suspend fun requestExpectedMovieList(limit: Int): List<Movie> {
         Log.d("MovieRepository", "Requesting expected movie list")
-        return apiDataSource.requestExpectedMovies()
-    }
-
-    override suspend fun requestAllExpectedMovies(): List<Movie> {
-        return apiDataSource.requestAllExpectedMovies()
+        return apiDataSource.requestListMovies(limit = limit, list = "planned-to-watch-films")
     }
 
     override suspend fun requestMoviesBySearch(movieName: String): List<Movie> {
@@ -59,7 +54,7 @@ class MovieRepositoryImpl @Inject constructor(
         val lastUpdateTime = getLastUpdateTime()
         if (currentMovies.isEmpty() || System.currentTimeMillis() - lastUpdateTime > 24 * 60 * 60 * 1000) {
             Log.d("MovieRepository", "refreshExpectedMovieListIfNeeded")
-            val movies = requestExpectedMovieList()
+            val movies = requestExpectedMovieList(limit = 50)
             localDataSource.storeMovies(movies)
             saveLastUpdateTime(System.currentTimeMillis())
         }

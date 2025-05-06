@@ -33,5 +33,7 @@ interface MovieAPI {
     suspend fun getMoviesCategories(
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 20,
+        @Query("sortField=&sortType") sort: Int = 1,
+        @Query("category") category: String
     ): CategoriesResponse
 }

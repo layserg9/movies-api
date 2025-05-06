@@ -4,8 +4,7 @@ import com.example.apimovies.data.Categories
 import com.example.apimovies.data.Movie
 
 interface ApiDataSource {
-    suspend fun requestExpectedMovies(): List<Movie>
-    suspend fun requestAllExpectedMovies(): List<Movie>
+    suspend fun requestListMovies(limit: Int, list: String): List<Movie>
     suspend fun requestMoviesBySearch(movieName: String): List<Movie>
-    suspend fun requestMoviesCategories(): List<Categories>
+    suspend fun requestMoviesCategories(limit: Int, category: String): List<Categories>
 }

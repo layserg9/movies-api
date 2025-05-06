@@ -32,7 +32,7 @@ class CategoriesViewModelImpl @Inject constructor(
 
     private fun loadCategories() {
         viewModelScope.launch {
-            _categoriesList.value = movieRepository.requestCategories()
+            _categoriesList.value = movieRepository.requestCategories(limit = 250)
         }
     }
 }

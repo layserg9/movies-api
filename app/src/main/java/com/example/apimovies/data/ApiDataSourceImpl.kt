@@ -28,9 +28,9 @@ class ApiDataSourceImpl @Inject constructor(
         .build()
     private val apiService = retrofit.create(MovieAPI::class.java)
 
-    override suspend fun requestExpectedMovies(): List<Movie> {
+    override suspend fun requestListMovies(limit: Int, list: String): List<Movie> {
         return try {
-            val response = apiService.getMovies(limit = 50, lists = "planned-to-watch-films").docs
+            val response = apiService.getMovies(limit = limit, lists = list).docs
             response.map { movieItem ->
                 apiDataParser.parseMovie(movieItem)
             }
@@ -39,20 +39,9 @@ class ApiDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestAllExpectedMovies(): List<Movie> {
+    override suspend fun requestMoviesCategories(limit: Int, category: String): List<Categories> {
         return try {
-            val response = apiService.getMovies(limit = 250, lists = "planned-to-watch-films").docs
-            response.map { movieItem ->
-                apiDataParser.parseMovie(movieItem)
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    override suspend fun requestMoviesCategories(): List<Categories> {
-        return try {
-            val response = apiService.getMoviesCategories().docs
+            val response = apiService.getMoviesCategories(limit = limit, category = category).docs
             response.map { categoriesItem ->
                 Log.d("MovieRepository", "requestMoviesCategories: $categoriesItem")
                 apiDataParser.parseCategories(categoriesItem)
