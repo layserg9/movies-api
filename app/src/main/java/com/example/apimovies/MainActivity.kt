@@ -37,14 +37,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.apimovies.data.Movie
+import com.example.apimovies.presentation.AltListScreenViewModelImpl
 import com.example.apimovies.presentation.CategoriesViewModelImpl
 import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
 import com.example.apimovies.presentation.MainListScreenViewModelImpl
 import com.example.apimovies.presentation.MovieDetailsViewModelImpl
+import com.example.apimovies.presentation.compose.AlternativeScreen
 import com.example.apimovies.presentation.compose.CategoriesScreen
 import com.example.apimovies.presentation.compose.FavoritesListScreen
 import com.example.apimovies.presentation.compose.MainListScreen
 import com.example.apimovies.presentation.compose.MovieDetailsScreen
+import com.example.apimovies.presentation.model.AltListScreenViewModel
 import com.example.apimovies.presentation.model.CategoriesViewModel
 import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
 import com.example.apimovies.presentation.model.MainListScreenViewModel
@@ -110,8 +113,35 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = MainList
+                        startDestination = AltList
                     ) {
+                        composable<AltList> {
+                            val viewModel: AltListScreenViewModel =
+                                hiltViewModel<AltListScreenViewModelImpl>()
+                            val list by viewModel.viewState
+
+                            AlternativeScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                list = list,
+                                onItemClick = { movie ->
+                                    navController.navigate(
+                                        MovieDetails(
+                                            id = movie.id,
+                                            name = movie.name,
+                                            alternativeName = movie.alternativeName,
+                                            year = movie.year,
+                                            genres = movie.genres,
+                                            countries = movie.countries,
+                                            poster = movie.poster,
+                                            kpRating = movie.kpRating,
+                                            description = movie.description,
+                                            movieLength = movie.movieLength,
+                                        )
+                                    )
+                                },
+                                onShowMoreClick = { navController.navigate(MainList) }
+                            )
+                        }
                         composable<MainList> {
                             val viewModel: MainListScreenViewModel =
                                 hiltViewModel<MainListScreenViewModelImpl>()
@@ -135,7 +165,7 @@ class MainActivity : ComponentActivity() {
                                             movieLength = movie.movieLength,
                                         )
                                     )
-                                },
+                                }
                             )
                         }
                         composable<FavoritesList> {
@@ -221,7 +251,7 @@ val list = persistentListOf(
 val bottomNavigationItems = listOf(
     BottomNavigationItem(
         title = "Главное",
-        route = MainList,
+        route = AltList,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
     ),
@@ -238,6 +268,9 @@ val bottomNavigationItems = listOf(
         unselectedIcon = Icons.Outlined.Build,
     )
 )
+
+@Serializable
+object AltList
 
 @Serializable
 object MainList

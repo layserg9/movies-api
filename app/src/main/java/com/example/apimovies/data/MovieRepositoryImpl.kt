@@ -45,6 +45,10 @@ class MovieRepositoryImpl @Inject constructor(
         return apiDataSource.requestExpectedMovies()
     }
 
+    override suspend fun requestAllExpectedMovies(): List<Movie> {
+        return apiDataSource.requestAllExpectedMovies()
+    }
+
     override suspend fun requestMoviesBySearch(movieName: String): List<Movie> {
         Log.d("MovieRepository", "Requesting movie by name")
         return apiDataSource.requestMoviesBySearch(movieName = movieName)

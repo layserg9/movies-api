@@ -39,6 +39,17 @@ class ApiDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun requestAllExpectedMovies(): List<Movie> {
+        return try {
+            val response = apiService.getMovies(limit = 250, lists = "planned-to-watch-films").docs
+            response.map { movieItem ->
+                apiDataParser.parseMovie(movieItem)
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     override suspend fun requestMoviesCategories(): List<Categories> {
         return try {
             val response = apiService.getMoviesCategories().docs

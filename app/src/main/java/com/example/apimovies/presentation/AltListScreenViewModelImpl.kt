@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apimovies.data.Movie
 import com.example.apimovies.domain.MovieRepository
+import com.example.apimovies.presentation.model.AltListScreenViewModel
 import com.example.apimovies.presentation.model.MainListScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -18,9 +19,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainListScreenViewModelImpl @Inject constructor(
+class AltListScreenViewModelImpl @Inject constructor(
     private val movieRepository: MovieRepository
-) : MainListScreenViewModel, ViewModel() {
+) : AltListScreenViewModel, ViewModel() {
     private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
     private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
 
@@ -34,8 +35,9 @@ class MainListScreenViewModelImpl @Inject constructor(
 
     private fun loadMovies() {
         viewModelScope.launch {
-            val movies = movieRepository.requestAllExpectedMovies()
-            _movieList.value = movies.filter { it.poster.isNotBlank() }.toImmutableList()
+            movieRepository.getExpectedMovieListFlow().collect { movies ->
+                _movieList.value = movies.filter { it.poster.isNotBlank() }.toImmutableList()
+            }
         }
     }
 }
