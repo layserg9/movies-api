@@ -148,7 +148,12 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate(MoviesList(slug))
                                 },
                                 onShowMoreMoviesClick = { type ->
-                                    navController.navigate(MoviesList(type.getSlug()))
+                                    navController.navigate(
+                                        MoviesList(
+                                            categorySlug = type.getSlug(),
+                                            categoryName = type.displayName()
+                                        )
+                                    )
                                 },
                                 onShowMoreCategoriesClick = { navController.navigate(Categories) }
                             )
@@ -185,7 +190,8 @@ class MainActivity : ComponentActivity() {
                                             movieLength = movie.movieLength,
                                         )
                                     )
-                                }
+                                },
+                                title = args.categoryName?: "",
                             )
                         }
                         composable<FavoritesList> {
@@ -293,7 +299,7 @@ val bottomNavigationItems = listOf(
 object MainList
 
 @Serializable
-data class MoviesList(val categorySlug: String? = null)
+data class MoviesList(val categorySlug: String? = null, val categoryName: String? = null)
 
 @Serializable
 object FavoritesList

@@ -40,7 +40,7 @@ class MoviesListScreenViewModelImpl @Inject constructor(
     override fun loadMoviesByCategory(slug: String) {
         viewModelScope.launch {
             val result = movieRepository.requestMoviesByCategory(slug = slug, limit = 250)
-            _moviesByCategory.value = result
+            _moviesByCategory.value = result.filter { it.poster.isNotBlank() }.toImmutableList()
         }
     }
 

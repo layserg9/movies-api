@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +36,7 @@ import com.example.apimovies.ui.theme.Elevation08DpLight
 import com.example.apimovies.ui.theme.LabelsSecondaryDark
 import com.example.apimovies.ui.theme.LabelsSecondaryLight
 import com.example.apimovies.ui.theme.OnPrimaryLightLight
+import com.example.apimovies.ui.theme.PurpleGrey40
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -42,6 +44,7 @@ fun MoviesListScreen(
     modifier: Modifier = Modifier,
     list: ImmutableList<Movie>,
     onItemClick: (Movie) -> Unit = {},
+    title: String,
 ) {
     LazyColumn(
         modifier = modifier
@@ -52,6 +55,15 @@ fun MoviesListScreen(
         contentPadding = PaddingValues(horizontal = 10.dp)
 
     ) {
+        item { Spacer(modifier = Modifier.height(25.dp)) }
+        item{
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = PurpleGrey40,
+            )
+        }
         items(items = list, key = { it.id }) { movieItem ->
             MovieItem(
                 movie = movieItem,
@@ -105,7 +117,7 @@ private fun MovieInfo(
     movie: Movie
 ) {
     val text = listOf(movie.alternativeName, movie.year.takeIf { it != 0L }.toString())
-        .filter { it.isNotBlank()}
+        .filter { it.isNotBlank() }
         .joinToString(", ")
 
     Column(
