@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Build
+import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Badge
@@ -261,14 +265,14 @@ val bottomNavigationItems = listOf(
     BottomNavigationItem(
         title = "Избранное",
         route = FavoritesList,
-        selectedIcon = Icons.Filled.FavoriteBorder,
+        selectedIcon = Icons.Filled.Favorite,
         unselectedIcon = Icons.Outlined.FavoriteBorder,
         badgeCount = 2
     ), BottomNavigationItem(
-        title = "Иное",
+        title = "Категории",
         route = Categories,
-        selectedIcon = Icons.Filled.Build,
-        unselectedIcon = Icons.Outlined.Build,
+        selectedIcon = Icons.Filled.Category,
+        unselectedIcon = Icons.Outlined.Category,
     )
 )
 
