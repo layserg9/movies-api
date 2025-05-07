@@ -19,16 +19,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
-import com.example.apimovies.R
 import com.example.apimovies.data.Category
 import com.example.apimovies.data.Movie
+import com.example.apimovies.ui.theme.TintsOrangeDark
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -89,7 +87,7 @@ private fun NewMovies(
                     .padding(end = 10.dp)
                     .clickable { onShowMoreClick() },
                 text = "смотреть все",
-                color = Color(ContextCompat.getColor(context, R.color.teal_700)),
+                color = TintsOrangeDark,
                 style = MaterialTheme.typography.titleSmall,
             )
         }
@@ -139,7 +137,7 @@ private fun CategoriesList(
                     .padding(end = 10.dp)
                     .clickable { onShowMoreClick() },
                 text = "смотреть все",
-                color = Color(ContextCompat.getColor(context, R.color.teal_700)),
+                color = TintsOrangeDark,
                 style = MaterialTheme.typography.titleSmall,
             )
         }
