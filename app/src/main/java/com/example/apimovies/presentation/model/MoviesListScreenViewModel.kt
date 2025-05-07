@@ -8,8 +8,8 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Stable
 interface MoviesListScreenViewModel{
-    @get:Composable
-    val viewState: State<ImmutableList<Movie>>
+//    @get:Composable
+//    val viewState: State<ImmutableList<Movie>>
     val moviesByCategoryViewState: State<List<Movie>>
     fun loadMoviesByCategory(slug: String)
 }

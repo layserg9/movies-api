@@ -22,18 +22,18 @@ import javax.inject.Inject
 class MoviesListScreenViewModelImpl @Inject constructor(
     private val movieRepository: MovieRepository
 ) : MoviesListScreenViewModel, ViewModel() {
-    private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
-    private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
+//    private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
+//    private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
     private val _moviesByCategory = mutableStateOf<List<Movie>>(emptyList())
 
 
     init {
-        loadMovies()
+//        loadMovies()
     }
 
-    override val viewState: State<ImmutableList<Movie>>
-        @Composable
-        get() = movieList.collectAsState(initial = persistentListOf())
+//    override val viewState: State<ImmutableList<Movie>>
+//        @Composable
+//        get() = movieList.collectAsState(initial = persistentListOf())
 
     override val moviesByCategoryViewState: State<List<Movie>> = _moviesByCategory
 
@@ -44,13 +44,13 @@ class MoviesListScreenViewModelImpl @Inject constructor(
         }
     }
 
-    private fun loadMovies() {
-        viewModelScope.launch {
-            val movies = movieRepository.requestMoviesByCategory(
-                slug = "planned-to-watch-films",
-                limit = 250
-            )
-            _movieList.value = movies.filter { it.poster.isNotBlank() }.toImmutableList()
-        }
-    }
+//    private fun loadMovies() {
+//        viewModelScope.launch {
+//            val movies = movieRepository.requestMoviesByCategory(
+//                slug = "planned-to-watch-films",
+//                limit = 250
+//            )
+//            _movieList.value = movies.filter { it.poster.isNotBlank() }.toImmutableList()
+//        }
+//    }
 }

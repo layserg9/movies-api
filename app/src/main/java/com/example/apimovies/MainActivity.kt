@@ -14,9 +14,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -24,6 +26,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -59,6 +62,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
+import kotlin.compareTo
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -75,6 +79,9 @@ class MainActivity : ComponentActivity() {
             APIMOVIESTheme {
                 var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
                 val navController = rememberNavController()
+                val favoritesViewModel: FavoritesListScreenViewModel = hiltViewModel<FavoritesListScreenViewModelImpl>()
+                val favoritesList by favoritesViewModel.viewState
+                val bottomNavigationItems = getBottomNavigationItems(favoritesList.size)
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -167,14 +174,14 @@ class MainActivity : ComponentActivity() {
                                 viewModel.loadMoviesByCategory(args.categorySlug ?: "")
                             }
 
-                            val list by viewModel.viewState
+//                            val list by viewModel.viewState
                             val moviesByCategory by viewModel.moviesByCategoryViewState
-                            val listToShow =
-                                if (args.categorySlug != null) moviesByCategory.toImmutableList() else list
+//                            val listToShow =
+//                                if (args.categorySlug != null) moviesByCategory.toImmutableList() else list
 
                             MoviesListScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                list = listToShow,
+                                list = moviesByCategory.toImmutableList(),
                                 onItemClick = { movie ->
                                     navController.navigate(
                                         MovieDetails(
@@ -256,6 +263,9 @@ class MainActivity : ComponentActivity() {
                                 list = list,
                             )
                         }
+                        composable<Search> {
+
+                        }
                     }
                 }
             }
@@ -274,26 +284,30 @@ val list = persistentListOf(
     Movie.preview().copy(id = 8),
 )
 
-val bottomNavigationItems = listOf(
-    BottomNavigationItem(
-        title = "Главное",
-        route = MainList,
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home,
-    ),
-    BottomNavigationItem(
-        title = "Избранное",
-        route = FavoritesList,
-        selectedIcon = Icons.Filled.Favorite,
-        unselectedIcon = Icons.Outlined.FavoriteBorder,
-        badgeCount = 2
-    ), BottomNavigationItem(
-        title = "Категории",
-        route = Categories,
-        selectedIcon = Icons.Filled.Category,
-        unselectedIcon = Icons.Outlined.Category,
+@Composable
+fun getBottomNavigationItems(favoritesCount: Int): List<BottomNavigationItem> {
+    return listOf(
+        BottomNavigationItem(
+            title = "Главное",
+            route = MainList,
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+        ),
+        BottomNavigationItem(
+            title = "Избранное",
+            route = FavoritesList,
+            selectedIcon = Icons.Filled.Favorite,
+            unselectedIcon = Icons.Outlined.FavoriteBorder,
+            badgeCount = favoritesCount.takeIf { it > 0 }
+        ),
+        BottomNavigationItem(
+            title = "Поиск",
+            route = Search,
+            selectedIcon = Icons.Filled.Search,
+            unselectedIcon = Icons.Outlined.Search,
+        )
     )
-)
+}
 
 @Serializable
 object MainList
@@ -306,6 +320,9 @@ object FavoritesList
 
 @Serializable
 object Categories
+
+@Serializable
+object Search
 
 @Serializable
 data class MovieDetails(
