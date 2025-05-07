@@ -1,6 +1,5 @@
 package com.example.apimovies.presentation.compose
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -20,55 +20,60 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.apimovies.data.Category
 import com.example.apimovies.data.Movie
+import com.example.apimovies.data.local.MoviesListType
 import com.example.apimovies.ui.theme.TintsOrangeDark
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun AlternativeScreen(
     modifier: Modifier = Modifier,
-    moviesList: ImmutableList<Movie>,
+    moviesByCategory: Map<MoviesListType, List<Movie>>,
     categoriesList: List<Category>,
     onMovieClick: (Movie) -> Unit = {},
     onCategoryClick: (slug: String) -> Unit = {},
-    onShowMoreNewMoviesClick: () -> Unit = {},
+    onShowMoreMoviesClick: (MoviesListType) -> Unit = {},
     onShowMoreCategoriesClick: () -> Unit
 ) {
-    val context = LocalContext.current
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(vertical = 25.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        moviesByCategory.forEach { (type, list) ->
+            if (list.isNotEmpty()) {
+                item {
+                    ListMovies(
+                        list = list,
+                        title = type.displayName(),
+                        onMovieClick = onMovieClick,
+                        onShowMoreClick = { onShowMoreMoviesClick(type) }
+                    )
+                }
+                item { Spacer(modifier = Modifier.height(10.dp)) }
+            }
+        }
 
-    Column(modifier = modifier) {
-        Spacer(modifier = Modifier.height(25.dp))
-
-        NewMovies(
-            list = moviesList,
-            onMovieClick = onMovieClick,
-            onShowMoreClick = onShowMoreNewMoviesClick,
-            context = context,
-        )
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        CategoriesList(
-            context = context,
-            onCategoryClick = onCategoryClick,
-            onShowMoreClick = onShowMoreCategoriesClick,
-            list = categoriesList,
-        )
+        item {
+            CategoriesList(
+                onCategoryClick = onCategoryClick,
+                onShowMoreClick = onShowMoreCategoriesClick,
+                list = categoriesList,
+            )
+        }
     }
 }
 
 @Composable
-private fun NewMovies(
+private fun ListMovies(
     modifier: Modifier = Modifier,
-    list: ImmutableList<Movie>,
+    list: List<Movie>,
+    title: String,
     onMovieClick: (Movie) -> Unit = {},
     onShowMoreClick: () -> Unit = {},
-    context: Context,
 ) {
     Column(modifier = modifier.height(280.dp)) {
         Row(
@@ -78,7 +83,7 @@ private fun NewMovies(
         ) {
             Text(
                 modifier = Modifier.padding(start = 10.dp),
-                text = "Новинки",
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
             )
 
@@ -118,7 +123,6 @@ private fun CategoriesList(
     list: List<Category>,
     onCategoryClick: (slug: String) -> Unit = {},
     onShowMoreClick: () -> Unit = {},
-    context: Context,
 ) {
     Column(modifier = modifier.height(250.dp)) {
         Row(
@@ -141,7 +145,6 @@ private fun CategoriesList(
                 style = MaterialTheme.typography.titleSmall,
             )
         }
-
 
         Spacer(modifier = Modifier.height(15.dp))
 

@@ -120,12 +120,13 @@ class MainActivity : ComponentActivity() {
                         composable<AltList> {
                             val altListViewModel: MainListScreenViewModel =
                                 hiltViewModel<MainListScreenViewModelImpl>()
-                            val moviesList by altListViewModel.moviesViewState
+
+                            val moviesMap by altListViewModel.moviesMapState
                             val categoriesList by altListViewModel.categoriesViewState
 
                             AlternativeScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                moviesList = moviesList,
+                                moviesByCategory = moviesMap,
                                 categoriesList = categoriesList,
                                 onMovieClick = { movie ->
                                     navController.navigate(
@@ -146,7 +147,9 @@ class MainActivity : ComponentActivity() {
                                 onCategoryClick = { slug ->
                                     navController.navigate(MoviesList(slug))
                                 },
-                                onShowMoreNewMoviesClick = { navController.navigate(MoviesList()) },
+                                onShowMoreMoviesClick = { type ->
+                                    navController.navigate(MoviesList(type.getSlug()))
+                                },
                                 onShowMoreCategoriesClick = { navController.navigate(Categories) }
                             )
                         }
@@ -161,7 +164,8 @@ class MainActivity : ComponentActivity() {
 
                             val list by viewModel.viewState
                             val moviesByCategory by viewModel.moviesByCategoryViewState
-                            val listToShow = if (args.categorySlug != null) moviesByCategory.toImmutableList() else list
+                            val listToShow =
+                                if (args.categorySlug != null) moviesByCategory.toImmutableList() else list
 
                             MoviesListScreen(
                                 modifier = Modifier.padding(innerPadding),
