@@ -38,7 +38,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.apimovies.data.Movie
-import com.example.apimovies.presentation.AltListScreenViewModelImpl
+import com.example.apimovies.presentation.MainListScreenViewModelImpl
 import com.example.apimovies.presentation.CategoriesViewModelImpl
 import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
 import com.example.apimovies.presentation.MoviesListScreenViewModelImpl
@@ -48,7 +48,7 @@ import com.example.apimovies.presentation.compose.CategoriesScreen
 import com.example.apimovies.presentation.compose.FavoritesListScreen
 import com.example.apimovies.presentation.compose.MoviesListScreen
 import com.example.apimovies.presentation.compose.MovieDetailsScreen
-import com.example.apimovies.presentation.model.AltListScreenViewModel
+import com.example.apimovies.presentation.model.MainListScreenViewModel
 import com.example.apimovies.presentation.model.CategoriesViewModel
 import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
 import com.example.apimovies.presentation.model.MoviesListScreenViewModel
@@ -118,8 +118,8 @@ class MainActivity : ComponentActivity() {
                         startDestination = AltList
                     ) {
                         composable<AltList> {
-                            val altListViewModel: AltListScreenViewModel =
-                                hiltViewModel<AltListScreenViewModelImpl>()
+                            val altListViewModel: MainListScreenViewModel =
+                                hiltViewModel<MainListScreenViewModelImpl>()
                             val moviesList by altListViewModel.moviesViewState
                             val categoriesList by altListViewModel.categoriesViewState
 

@@ -8,7 +8,7 @@ import com.example.apimovies.data.Movie
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
-interface AltListScreenViewModel {
+interface MainListScreenViewModel {
     @get:Composable
     val moviesViewState: State<ImmutableList<Movie>>
     @get:Composable

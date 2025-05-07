@@ -1,7 +1,6 @@
 package com.example.apimovies.presentation.compose
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,8 +29,6 @@ import coil.compose.AsyncImage
 import com.example.apimovies.R
 import com.example.apimovies.data.Category
 import com.example.apimovies.data.Movie
-import com.example.apimovies.ui.theme.Elevation08DpLight
-import com.example.apimovies.ui.theme.OnPrimaryLightLight
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -47,13 +44,17 @@ fun AlternativeScreen(
     val context = LocalContext.current
 
     Column(modifier = modifier) {
+        Spacer(modifier = Modifier.height(25.dp))
+
         NewMovies(
             list = moviesList,
             onMovieClick = onMovieClick,
             onShowMoreClick = onShowMoreNewMoviesClick,
             context = context,
         )
-        Spacer(modifier = Modifier.height(25.dp))
+
+        Spacer(modifier = Modifier.height(15.dp))
+
         CategoriesList(
             context = context,
             onCategoryClick = onCategoryClick,
@@ -71,7 +72,7 @@ private fun NewMovies(
     onShowMoreClick: () -> Unit = {},
     context: Context,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.height(280.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -93,14 +94,12 @@ private fun NewMovies(
             )
         }
 
-
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .background(color = Elevation08DpLight),
+                .wrapContentHeight(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.Top,
             contentPadding = PaddingValues(horizontal = 10.dp)
@@ -123,7 +122,7 @@ private fun CategoriesList(
     onShowMoreClick: () -> Unit = {},
     context: Context,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.height(250.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -151,8 +150,7 @@ private fun CategoriesList(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .background(color = Elevation08DpLight),
+                .wrapContentHeight(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.Top,
             contentPadding = PaddingValues(horizontal = 10.dp)
@@ -160,7 +158,7 @@ private fun CategoriesList(
             items(items = list, key = { it.id }) { categoryItem ->
                 CategoryItem(
                     category = categoryItem,
-                    onClick = {onCategoryClick(it.slug)},
+                    onClick = { onCategoryClick(it.slug) },
                 )
             }
         }
@@ -176,7 +174,6 @@ private fun MovieItem(
     Column(
         modifier = modifier
             .width(100.dp)
-            .background(color = OnPrimaryLightLight)
             .clickable { onClick(movie) },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
@@ -207,7 +204,6 @@ private fun CategoryItem(
     Column(
         modifier = modifier
             .width(150.dp)
-            .background(color = OnPrimaryLightLight)
             .clickable { onClick(category) },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)

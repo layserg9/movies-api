@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.apimovies.data.Category
 import com.example.apimovies.data.Movie
 import com.example.apimovies.domain.MovieRepository
-import com.example.apimovies.presentation.model.AltListScreenViewModel
+import com.example.apimovies.presentation.model.MainListScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AltListScreenViewModelImpl @Inject constructor(
+class MainListScreenViewModelImpl @Inject constructor(
     private val movieRepository: MovieRepository
-) : AltListScreenViewModel, ViewModel() {
+) : MainListScreenViewModel, ViewModel() {
     private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
     private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
     private val _categoriesList = MutableStateFlow<List<Category>>(emptyList())
