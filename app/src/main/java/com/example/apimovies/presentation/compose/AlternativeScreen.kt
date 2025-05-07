@@ -40,7 +40,7 @@ fun AlternativeScreen(
     moviesList: ImmutableList<Movie>,
     categoriesList: List<Category>,
     onMovieClick: (Movie) -> Unit = {},
-    onCategoryClick: (Category) -> Unit = {},
+    onCategoryClick: (slug: String) -> Unit = {},
     onShowMoreNewMoviesClick: () -> Unit = {},
     onShowMoreCategoriesClick: () -> Unit
 ) {
@@ -119,7 +119,7 @@ private fun NewMovies(
 private fun CategoriesList(
     modifier: Modifier = Modifier,
     list: List<Category>,
-    onCategoryClick: (Category) -> Unit = {},
+    onCategoryClick: (slug: String) -> Unit = {},
     onShowMoreClick: () -> Unit = {},
     context: Context,
 ) {
@@ -160,7 +160,7 @@ private fun CategoriesList(
             items(items = list, key = { it.id }) { categoryItem ->
                 CategoryItem(
                     category = categoryItem,
-                    onClick = onCategoryClick,
+                    onClick = {onCategoryClick(it.slug)},
                 )
             }
         }

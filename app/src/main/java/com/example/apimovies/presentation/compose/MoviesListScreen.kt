@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +38,7 @@ import com.example.apimovies.ui.theme.OnPrimaryLightLight
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun MainListScreen(
+fun MoviesListScreen(
     modifier: Modifier = Modifier,
     list: ImmutableList<Movie>,
     onItemClick: (Movie) -> Unit = {},

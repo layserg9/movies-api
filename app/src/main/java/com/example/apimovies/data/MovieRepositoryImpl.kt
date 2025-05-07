@@ -39,9 +39,9 @@ class MovieRepositoryImpl @Inject constructor(
         return apiDataSource.requestMoviesCategories(limit = limit, category = "Онлайн-кинотеатр")
     }
 
-    override suspend fun requestExpectedMovieList(limit: Int): List<Movie> {
-        Log.d("MovieRepository", "Requesting expected movie list")
-        return apiDataSource.requestListMovies(limit = limit, list = "planned-to-watch-films")
+    override suspend fun requestMoviesByCategory(slug: String, limit: Int): List<Movie> {
+        Log.d("MovieRepository", "Requesting movies by Categoy")
+        return apiDataSource.requestListMovies(limit = limit, list = slug)
     }
 
     override suspend fun requestMoviesBySearch(movieName: String): List<Movie> {
@@ -54,7 +54,7 @@ class MovieRepositoryImpl @Inject constructor(
         val lastUpdateTime = getLastUpdateTime()
         if (currentMovies.isEmpty() || System.currentTimeMillis() - lastUpdateTime > 24 * 60 * 60 * 1000) {
             Log.d("MovieRepository", "refreshExpectedMovieListIfNeeded")
-            val movies = requestExpectedMovieList(limit = 50)
+            val movies = requestMoviesByCategory(slug = "planned-to-watch-films", limit = 50)
             localDataSource.storeMovies(movies)
             saveLastUpdateTime(System.currentTimeMillis())
         }
@@ -83,57 +83,4 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getAllFavorites(): List<Movie> {
         return localDataSource.getAllFavorites()
     }
-
-    //    override suspend fun getMovieList(): List<Movie> {
-//        return try {
-//            val movieIds = listOf(333L, 5619L, 6695L)
-//            movieIds.map { fetchMovie(it).toMovie() }
-//        } catch (e: Exception) {
-//            emptyList()
-//        }
-//    }
-
-//    override suspend fun getMovieListByDate(): List<Movie> {
-//        return try {
-//            val movies = fetchMoviesByDate("01.01.2025-01.04.2025")
-//            movies.map { it.toMovie() }
-//        } catch (e: Exception) {
-//            Log.e("MovieRepository", "Error fetching movie list", e)
-//            emptyList()
-//        }
-//    }
-
-//    override suspend fun searchMovieList(): List<Movie> {
-//        return try {
-//            val movies = fetchMoviesByName("star wars")
-//            movies.map { it.toMovie() }
-//        } catch (e: Exception) {
-//            Log.e("MovieRepository", "Error fetching movie list", e)
-//            emptyList()
-//        }
-//    }
-//
-//    private suspend fun fetchMoviesByDate(updatedAt: String): List<MovieItem> {
-//        return try {
-//            apiService.getMoviesByDate(limit = 30, updatedAt = updatedAt).docs
-//        } catch (e: Exception) {
-//            Log.e("MovieRepository", "Network error", e)
-//            emptyList()
-//        }
-//    }
-//
-//
-//    private suspend fun fetchMoviesByName(movieName: String): List<MovieItem> {
-//        return try {
-//            apiService.getMoviesByName(limit = 30, movieName = movieName).docs
-//        } catch (e: Exception) {
-//            Log.e("MovieRepository", "Network error", e)
-//            emptyList()
-//        }
-//    }
-//
-//    private suspend fun fetchMovie(movieId: Long): MovieItem {
-//        return apiService.getMovieById(movieId)
-//    }
-//
 }

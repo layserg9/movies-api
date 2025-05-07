@@ -11,14 +11,10 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Badge
@@ -28,6 +24,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,21 +41,22 @@ import com.example.apimovies.data.Movie
 import com.example.apimovies.presentation.AltListScreenViewModelImpl
 import com.example.apimovies.presentation.CategoriesViewModelImpl
 import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
-import com.example.apimovies.presentation.MainListScreenViewModelImpl
+import com.example.apimovies.presentation.MoviesListScreenViewModelImpl
 import com.example.apimovies.presentation.MovieDetailsViewModelImpl
 import com.example.apimovies.presentation.compose.AlternativeScreen
 import com.example.apimovies.presentation.compose.CategoriesScreen
 import com.example.apimovies.presentation.compose.FavoritesListScreen
-import com.example.apimovies.presentation.compose.MainListScreen
+import com.example.apimovies.presentation.compose.MoviesListScreen
 import com.example.apimovies.presentation.compose.MovieDetailsScreen
 import com.example.apimovies.presentation.model.AltListScreenViewModel
 import com.example.apimovies.presentation.model.CategoriesViewModel
 import com.example.apimovies.presentation.model.FavoritesListScreenViewModel
-import com.example.apimovies.presentation.model.MainListScreenViewModel
+import com.example.apimovies.presentation.model.MoviesListScreenViewModel
 import com.example.apimovies.presentation.model.MovieDetailsViewModel
 import com.example.apimovies.ui.theme.APIMOVIESTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 
@@ -145,18 +143,29 @@ class MainActivity : ComponentActivity() {
                                         )
                                     )
                                 },
-                                onShowMoreNewMoviesClick = { navController.navigate(MainList) },
+                                onCategoryClick = { slug ->
+                                    navController.navigate(MoviesList(slug))
+                                },
+                                onShowMoreNewMoviesClick = { navController.navigate(MoviesList()) },
                                 onShowMoreCategoriesClick = { navController.navigate(Categories) }
                             )
                         }
-                        composable<MainList> {
-                            val viewModel: MainListScreenViewModel =
-                                hiltViewModel<MainListScreenViewModelImpl>()
-                            val list by viewModel.viewState
+                        composable<MoviesList> {
+                            val viewModel: MoviesListScreenViewModel =
+                                hiltViewModel<MoviesListScreenViewModelImpl>()
+                            val args = it.toRoute<MoviesList>()
 
-                            MainListScreen(
+                            LaunchedEffect(args.categorySlug) {
+                                viewModel.loadMoviesByCategory(args.categorySlug ?: "")
+                            }
+
+                            val list by viewModel.viewState
+                            val moviesByCategory by viewModel.moviesByCategoryViewState
+                            val listToShow = if (args.categorySlug != null) moviesByCategory.toImmutableList() else list
+
+                            MoviesListScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                list = list,
+                                list = listToShow,
                                 onItemClick = { movie ->
                                     navController.navigate(
                                         MovieDetails(
@@ -280,7 +289,7 @@ val bottomNavigationItems = listOf(
 object AltList
 
 @Serializable
-object MainList
+data class MoviesList(val categorySlug: String? = null)
 
 @Serializable
 object FavoritesList

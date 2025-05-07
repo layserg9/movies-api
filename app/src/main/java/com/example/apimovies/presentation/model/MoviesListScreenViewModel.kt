@@ -7,7 +7,9 @@ import com.example.apimovies.data.Movie
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
-interface MainListScreenViewModel{
+interface MoviesListScreenViewModel{
     @get:Composable
     val viewState: State<ImmutableList<Movie>>
+    val moviesByCategoryViewState: State<List<Movie>>
+    fun loadMoviesByCategory(slug: String)
 }
