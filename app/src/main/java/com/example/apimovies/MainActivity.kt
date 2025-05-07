@@ -115,9 +115,9 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = AltList
+                        startDestination = MainList
                     ) {
-                        composable<AltList> {
+                        composable<MainList> {
                             val altListViewModel: MainListScreenViewModel =
                                 hiltViewModel<MainListScreenViewModelImpl>()
 
@@ -271,7 +271,7 @@ val list = persistentListOf(
 val bottomNavigationItems = listOf(
     BottomNavigationItem(
         title = "Главное",
-        route = AltList,
+        route = MainList,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
     ),
@@ -290,7 +290,7 @@ val bottomNavigationItems = listOf(
 )
 
 @Serializable
-object AltList
+object MainList
 
 @Serializable
 data class MoviesList(val categorySlug: String? = null)
