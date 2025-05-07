@@ -12,6 +12,7 @@ import com.example.apimovies.data.local.MoviesListType
 import com.example.apimovies.domain.MovieRepository
 import com.example.apimovies.presentation.model.MainListScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -41,7 +42,8 @@ class MainListScreenViewModelImpl @Inject constructor(
     private fun loadAllCategories() {
         viewModelScope.launch {
             val result = MoviesListType.entries.associateWith { type ->
-                movieRepository.requestMoviesByCategory(type.getSlug(), limit = 20)
+                movieRepository.requestMoviesByCategory(type.getSlug(), limit = 30)
+                    .filter{ it.poster.isNotBlank() }.toImmutableList()
             }
             _moviesMap.value = result
         }

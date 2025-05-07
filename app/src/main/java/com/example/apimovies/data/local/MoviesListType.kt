@@ -1,27 +1,27 @@
 package com.example.apimovies.data.local
 
 enum class MoviesListType {
-//    NEW,
+    GREAT,
     POPULAR,
-//    RECOMMENDED,
+    PROGRAMMERS,
     TRENDING,
-    ANIME;
+    ZOMBIE;
     fun displayName(): String {
         return when (this) {
-//            NEW -> "Новинки"
+            GREAT -> "100 великих фильмов XXI века"
             POPULAR -> "Популярное"
-            ANIME -> "Аниме"
+            ZOMBIE -> "ЗОМБИ!!!"
             TRENDING -> "Ждем!"
-//            RECOMMENDED -> "Рекомендуемое"
+            PROGRAMMERS -> "Фильмы и сериалы про программистов"
         }
     }
     fun getSlug(): String {
         return when (this) {
-//            NEW -> "Новинки"
+            GREAT -> "100_greatest_movies_XXI"
             POPULAR -> "popular-films"
-            ANIME -> "!anime"
+            ZOMBIE -> "theme_zombie"
             TRENDING -> "planned-to-watch-films"
-//            RECOMMENDED -> "Рекомендуемое"
+            PROGRAMMERS -> "about_programmers"
         }
     }
 }

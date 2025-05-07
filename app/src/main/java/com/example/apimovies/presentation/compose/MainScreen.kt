@@ -82,7 +82,9 @@ private fun ListMovies(
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                modifier = Modifier.padding(start = 10.dp),
+                modifier = Modifier
+                    .padding(start = 10.dp)
+                    .weight(1f),
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
             )
