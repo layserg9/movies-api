@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.apimovies.R
-import com.example.apimovies.data.Categories
+import com.example.apimovies.data.Category
 import com.example.apimovies.data.Movie
 import com.example.apimovies.ui.theme.Elevation08DpLight
 import com.example.apimovies.ui.theme.OnPrimaryLightLight
@@ -38,9 +38,9 @@ import kotlinx.collections.immutable.ImmutableList
 fun AlternativeScreen(
     modifier: Modifier = Modifier,
     moviesList: ImmutableList<Movie>,
-    categoriesList: List<Categories>,
+    categoriesList: List<Category>,
     onMovieClick: (Movie) -> Unit = {},
-    onCategoryClick: (Categories) -> Unit = {},
+    onCategoryClick: (Category) -> Unit = {},
     onShowMoreNewMoviesClick: () -> Unit = {},
     onShowMoreCategoriesClick: () -> Unit
 ) {
@@ -118,8 +118,8 @@ private fun NewMovies(
 @Composable
 private fun CategoriesList(
     modifier: Modifier = Modifier,
-    list: List<Categories>,
-    onCategoryClick: (Categories) -> Unit = {},
+    list: List<Category>,
+    onCategoryClick: (Category) -> Unit = {},
     onShowMoreClick: () -> Unit = {},
     context: Context,
 ) {
@@ -201,8 +201,8 @@ private fun MovieItem(
 @Composable
 private fun CategoryItem(
     modifier: Modifier = Modifier,
-    category: Categories,
-    onClick: (Categories) -> Unit
+    category: Category,
+    onClick: (Category) -> Unit
 ) {
     Column(
         modifier = modifier

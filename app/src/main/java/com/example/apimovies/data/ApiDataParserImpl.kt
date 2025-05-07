@@ -21,8 +21,8 @@ class ApiDataParserImpl @Inject constructor(): ApiDataParser {
         )
     }
 
-    override fun parseCategories(categories: CategoriesItem): Categories {
-        return Categories(
+    override fun parseCategories(categories: CategoriesItem): Category {
+        return Category(
             id = categories.id,
             name = categories.name,
             slug = categories.slug,

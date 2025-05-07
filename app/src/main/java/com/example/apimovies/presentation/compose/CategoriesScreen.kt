@@ -22,15 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.apimovies.data.Categories
+import com.example.apimovies.data.Category
 import com.example.apimovies.ui.theme.Elevation08DpLight
 import com.example.apimovies.ui.theme.OnPrimaryLightLight
 
 @Composable
 fun CategoriesScreen(
     modifier: Modifier = Modifier,
-    list: List<Categories>,
-    onItemClick: (Categories) -> Unit = {},
+    list: List<Category>,
+    onItemClick: (Category) -> Unit = {},
 ) {
     Log.d("TestTest", "$list")
     LazyColumn(
@@ -54,8 +54,8 @@ fun CategoriesScreen(
 @Composable
 private fun CategoryItem(
     modifier: Modifier = Modifier,
-    category: Categories,
-    onClick: (Categories) -> Unit
+    category: Category,
+    onClick: (Category) -> Unit
 ) {
     Row(
         modifier = modifier

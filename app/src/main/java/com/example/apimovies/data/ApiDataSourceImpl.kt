@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.apimovies.domain.ApiDataParser
 import com.example.apimovies.domain.ApiDataSource
 import com.example.apimovies.retrofit.AuthInterceptor
-import com.example.apimovies.retrofit.CategoriesItem
 import com.example.apimovies.retrofit.MovieAPI
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,7 +38,7 @@ class ApiDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestMoviesCategories(limit: Int, category: String): List<Categories> {
+    override suspend fun requestMoviesCategories(limit: Int, category: String): List<Category> {
         return try {
             val response = apiService.getMoviesCategories(limit = limit, category = category).docs
             response.map { categoriesItem ->

@@ -1,6 +1,5 @@
 package com.example.apimovies.retrofit
 
-import com.example.apimovies.data.Categories
 import kotlinx.serialization.Serializable
 
 @Serializable

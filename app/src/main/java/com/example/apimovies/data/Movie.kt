@@ -1,7 +1,6 @@
 package com.example.apimovies.data
 
 import com.example.apimovies.data.local.MovieEntity
-import com.example.apimovies.retrofit.Cover
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -48,7 +47,7 @@ data class Movie(
 }
 
 @Serializable
-data class Categories(
+data class Category(
     val id: String,
     val name: String,
     val slug: String,

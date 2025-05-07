@@ -34,7 +34,7 @@ class MovieRepositoryImpl @Inject constructor(
         return localDataSource.getExpectedMovieListFlow()
     }
 
-    override suspend fun requestCategories(limit: Int): List<Categories> {
+    override suspend fun requestCategories(limit: Int): List<Category> {
         Log.d("MovieRepository", "Requesting Categories")
         return apiDataSource.requestMoviesCategories(limit = limit, category = "Онлайн-кинотеатр")
     }

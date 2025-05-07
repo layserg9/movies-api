@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apimovies.data.Categories
+import com.example.apimovies.data.Category
 import com.example.apimovies.data.Movie
 import com.example.apimovies.domain.MovieRepository
 import com.example.apimovies.presentation.model.AltListScreenViewModel
@@ -24,8 +24,8 @@ class AltListScreenViewModelImpl @Inject constructor(
 ) : AltListScreenViewModel, ViewModel() {
     private val _movieList = MutableStateFlow<ImmutableList<Movie>>(persistentListOf())
     private val movieList: StateFlow<ImmutableList<Movie>> = _movieList
-    private val _categoriesList = MutableStateFlow<List<Categories>>(emptyList())
-    private val categoriesList: StateFlow<List<Categories>> = _categoriesList
+    private val _categoriesList = MutableStateFlow<List<Category>>(emptyList())
+    private val categoriesList: StateFlow<List<Category>> = _categoriesList
 
 
     init {
@@ -36,7 +36,7 @@ class AltListScreenViewModelImpl @Inject constructor(
     override val moviesViewState: State<ImmutableList<Movie>>
         @Composable
         get() = movieList.collectAsState(initial = persistentListOf())
-    override val categoriesViewState: State<List<Categories>>
+    override val categoriesViewState: State<List<Category>>
         @Composable
         get() = categoriesList.collectAsState()
 
