@@ -29,7 +29,7 @@ import com.example.apimovies.data.local.MoviesListType
 import com.example.apimovies.ui.theme.TintsOrangeDark
 
 @Composable
-fun AlternativeScreen(
+fun MainMenuScreen(
     modifier: Modifier = Modifier,
     moviesByCategory: Map<MoviesListType, List<Movie>>,
     categoriesList: List<Category>,

@@ -11,11 +11,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
@@ -46,7 +44,7 @@ import com.example.apimovies.presentation.CategoriesViewModelImpl
 import com.example.apimovies.presentation.FavoritesListScreenViewModelImpl
 import com.example.apimovies.presentation.MoviesListScreenViewModelImpl
 import com.example.apimovies.presentation.MovieDetailsViewModelImpl
-import com.example.apimovies.presentation.compose.AlternativeScreen
+import com.example.apimovies.presentation.compose.MainMenuScreen
 import com.example.apimovies.presentation.compose.CategoriesScreen
 import com.example.apimovies.presentation.compose.FavoritesListScreen
 import com.example.apimovies.presentation.compose.MoviesListScreen
@@ -62,7 +60,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
-import kotlin.compareTo
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -125,13 +122,13 @@ class MainActivity : ComponentActivity() {
                         startDestination = MainList
                     ) {
                         composable<MainList> {
-                            val altListViewModel: MainListScreenViewModel =
+                            val mainMenuViewModel: MainListScreenViewModel =
                                 hiltViewModel<MainListScreenViewModelImpl>()
 
-                            val moviesMap by altListViewModel.moviesMapState
-                            val categoriesList by altListViewModel.categoriesViewState
+                            val moviesMap by mainMenuViewModel.moviesMapState
+                            val categoriesList by mainMenuViewModel.categoriesViewState
 
-                            AlternativeScreen(
+                            MainMenuScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 moviesByCategory = moviesMap,
                                 categoriesList = categoriesList,

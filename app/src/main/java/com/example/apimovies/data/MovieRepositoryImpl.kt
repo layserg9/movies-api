@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.core.content.edit
 
 class MovieRepositoryImpl @Inject constructor(
     private val apiDataSource: ApiDataSource,
@@ -65,7 +66,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     private fun saveLastUpdateTime(time: Long) {
-        sharedPreferences.edit().putLong(LAST_UPDATE_TIME_KEY, time).apply()
+        sharedPreferences.edit { putLong(LAST_UPDATE_TIME_KEY, time) }
     }
 
     override suspend fun addMovieToFavorites(movie: Movie) {
